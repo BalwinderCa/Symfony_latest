@@ -1,0 +1,74 @@
+{% extends '@AppBundle/layout.html.twig' %}
+{% block body%}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="row">
+					<div class="col-md-6">
+						<a href="{{path("app_payment_withdrawal")}}" class="btn  btn-lg btn-warning col-md-12"><i class="material-icons" style="font-size: 30px;">refresh</i> Refresh</a>
+					</div>
+					<div class="col-md-6">
+						<a class="btn btn btn-lg btn-yellow col-md-12"><i class="material-icons" style="font-size: 30px;">attach_money</i> {{count|length}} withdrawals</a>
+					</div>
+				</div>
+				<div class="card">
+					<div class="card-content">
+						<div class="table-responsive">
+							<table class="table" width="100%">
+								<thead class="text-primary">
+									<tr>
+										<th>User</th>
+										<th>Method</th>
+										<th>Account</th>
+										<th>Amount</th>
+										<th>Points</th>
+										<th>Date</th>
+										<th>State</th>
+										<th width="170px">Action</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for withdrawals in pagination %}
+										<tr>
+											<td>{{withdrawals.user.name}}</td>
+											<td>{{withdrawals.methode}}</td>
+											<td>{{withdrawals.account}}</td>
+											<td>{{withdrawals.amount}}</td>
+											<td>{{withdrawals.points}} P</td>
+											<td>{{withdrawals.created|date("Y/m/d - H:i")}}</td>
+											<td><label class="label  label-success" {% if withdrawals.type == "Pending" %}   style=" background-color: #ffb818 !important; "{% elseif withdrawals.type == "Paid" %}  style=" background-color: #25ce2a !important; " {% elseif withdrawals.type == "Rejected" %}  style=" background-color: #f92d2d !important; " {% endif %}>{{withdrawals.type}}</label></td>
+											<td>
+												<a href="{{path("app_payment_withdrawal_approve",{id:withdrawals.id})}}" rel="tooltip" data-placement="left" class=" btn btn-primary btn-xs btn-round" data-original-title="Paid">
+													<i class="material-icons">check</i>
+												</a>
+												<a href="{{path("app_payment_withdrawal_reject",{id:withdrawals.id})}}" rel="tooltip" data-placement="left" class=" btn btn-primary btn-xs btn-round" data-original-title="Reject">
+													<i class="material-icons">close</i>
+												</a>
+												<a href="{{path("app_payment_withdrawal_delete",{id:withdrawals.id})}}" rel="tooltip" data-placement="left" class=" btn btn-danger btn-xs btn-round" data-original-title="Delete">
+													<i class="material-icons">delete</i>
+												</a>
+											</td>
+										</tr>
+									{% else %}
+										<tr>
+											<td colspan="4">
+												<br>
+												<br>
+												<center><img src="{{asset("img/bg_empty.png")}}"  style="width: auto !important;" =""></center>
+												<br>
+												<br>
+											</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class=" pull-right">
+						{{ knp_pagination_render(pagination) }}
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	{% endblock%}

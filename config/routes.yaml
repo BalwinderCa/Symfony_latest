@@ -1,0 +1,13 @@
+# config/routes.yaml
+
+# Loading app's routes
+app_bundle:
+    resource: '../src/AppBundle/Resources/config/routes.yaml'
+
+# Loading media bundle's routes
+media_bundle:
+    resource: '../src/MediaBundle/Resources/config/routes.yaml'
+
+# Loading user bundle's routes
+user_bundle:
+    resource: '../src/UserBundle/Resources/config/routes.yaml'

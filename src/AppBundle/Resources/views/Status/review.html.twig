@@ -1,0 +1,88 @@
+{% extends "@AppBundle/layout.html.twig" %}
+{% block body%}
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-offset-1 col-md-10">
+        <div class="card">
+          <div class="card-header card-header-icon" data-background-color="rose">
+            <i class="material-icons">check</i>
+          </div>
+          <div class="card-content">
+            <h4 class="card-title">Review "{{form.vars.value.title}}"</h4>
+            {{form_start(form)}}
+            <div class="form-group label-floating">
+              <label class="control-label">{{form.vars.value.type|capitalize}} title</label>
+              {{form_widget(form.title,{"attr":{"class":"form-control"}})}}
+              <span class="validate-input">{{form_errors(form.title)}}</span>
+            </div>
+
+              <div class="form-group label-floating ">
+                  <label class="control-label">{{form.vars.value.type|capitalize}} description</label>
+                  {{form_widget(form.description,{"attr":{"class":"form-control"}})}}
+                  <span class="validate-input">{{form_errors(form.description)}}</span>
+              </div>
+            <img src="{{asset(form.vars.value.media.link)}}" class="fileinput-preview thumbnail " id="img-preview">
+            <br>
+            {% if form.vars.value.video != null %}
+            <video autobuffer autoloop loop controls width="100%">
+              <source id="video_here" src="{{asset(form.vars.value.video.link)}}">
+              <source id="video_here" src="{{asset(form.vars.value.video.link)}}">
+              <object type="video/ogg" data="{{asset(form.vars.value.video.link)}}">
+              <param name="src" value="{{asset(form.vars.value.video.link)}}">
+              <param name="autoplay" value="false">
+              <param name="autoStart" value="0">
+              <p><a href="{{asset(form.vars.value.video.link)}}">Download this video file.</a></p>
+              </object>
+            </video>
+            <br>
+            <br>
+            {% endif %}
+            <div class="">
+              <label>
+                {{form_widget(form.comment)}}  Enabled Comment
+              </label>
+            </div>
+            <br>
+            {{form_label(form.categories,null,{label_attr:{"style":"font-size:16px"}})}} :
+            <div>
+              <div class="row">
+                {% for field in form.categories %}
+                  <label  style="background: #000;border-radius: 20px;padding: 5px;text-align: center;margin: 10px;color: white;font-weight: bold;padding-left: 20px;padding-right: 20px;">
+                    {{ form_widget(field) }} {{ field.vars.label }}
+                  </label>
+                {% endfor %}
+              </div>
+            </div>
+            <br>
+            {{form_label(form.languages,null,{label_attr:{"style":"font-size:16px"}})}} :
+            <div>
+              <div class="row">
+                {% for field in form.languages %}
+                  <label  style="background: #000;border-radius: 20px;padding: 5px;text-align: center;margin: 10px;color: white;font-weight: bold;padding-left: 20px;padding-right: 20px;">
+                    {{ form_widget(field) }} {{ field.vars.label }}
+                  </label>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="form-group label-floating ">
+              <label class="control-label">{{form.vars.value.type|capitalize}} tags (Ex:anim,art,hero)</label>
+              <br>
+              {{form_widget(form.tags,{"attr":{"class":"input-tags"}})}}
+              <span class="validate-input">{{form_errors(form.tags)}}</span>
+            </div>
+            <script>
+            $('.input-tags').selectize({
+            persist: false,
+            createOnBlur: true,
+            create: true
+            });
+            </script>
+            <br>
+            <span class="pull-right"><a href="{{path("app_status_index")}}" class="btn btn-fill btn-yellow"><i class="material-icons">arrow_back</i> Cancel</a>{{form_widget(form.save,{attr:{"class":"btn btn-fill btn-rose"}})}}</span>
+            {{form_end(form)}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock%}
