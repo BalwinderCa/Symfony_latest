@@ -1,0 +1,13 @@
+# config/packages/twig.yaml
+twig:
+    default_path: '%kernel.project_dir%/templates'
+    paths:
+        '%kernel.project_dir%/src/AppBundle/Resources/views': 'AppBundle'
+        '%kernel.project_dir%/src/MediaBundle/Resources/views': 'MediaBundle'
+        '%kernel.project_dir%/src/UserBundle/Resources/views': 'UserBundle'
+
+
+when@test:
+    twig:
+        strict_variables: true
+

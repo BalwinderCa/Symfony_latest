@@ -1,0 +1,180 @@
+{% extends "@AppBundle/layout.html.twig" %}
+{% block body%}
+<div class="container-fluid">
+    <div class="row">
+       <div class="col-sm-offset-1 col-md-10">
+            <div class="card">
+                <div class="card-header card-header-icon" data-background-color="rose">
+                    {% if status.type =="image" %}
+                    <i class="material-icons">image</i>
+                    {% elseif status.type =="quote" %}
+                    <i class="material-icons">format_quote</i>
+                    {% elseif status.type =="gif" %}
+                    <i class="material-icons">gif</i>
+                    {% elseif status.type =="video" %}
+                    <i class="material-icons">videocam</i>
+                    {% endif %}
+                </div>
+                <div class="card-content">
+                    {% if status.type == "quote" %}
+                        <br>
+                        <br>
+                        <br>
+                        <div class="quote-view" style="background-color:#{{status.color}}">
+                            {{status.clear}}
+                        </div>
+                    {% else %}
+                        <h4 class="card-title">{{status.title}}</h4>
+                        <p >{{status.description}}</p>
+                    {% endif %}
+                    {% if status.type == "video" %}
+                        <video width="100%" src="{{asset(status.video.link)}}" controls>
+                            <source id="video_here">
+                            Your browser does not support HTML5 status.
+                        </video>
+                    {% endif %}
+                    {% if status.media != null %}
+                    <img src="{{asset(status.media.link)}}" class="fileinput-preview thumbnail " id="img-preview">
+                    {% endif %}
+
+                    <div style="text-align: center;">
+                        <div class="reaction">
+                            <span>
+                                <img src="{{asset("img/like.png")}}" alt="">
+                                <span class="label-reaction">{{status.like}}</span>
+                            </span>
+                            <span>
+                                <img src="{{asset("img/love.png")}}" alt="">
+                                <span class="label-reaction">{{status.love}}</span>
+                            </span>
+                            <span>
+                                <img src="{{asset("img/angry.png")}}" alt="">
+                                <span class="label-reaction">{{status.angry}}</span>
+                            </span>
+                            <span>
+                                <img src="{{asset("img/haha.png")}}" alt="">
+                                <span class="label-reaction">{{status.haha}}</span>
+                            </span>
+                            <span>
+                                <img src="{{asset("img/sad.png")}}" alt="">
+                                <span class="label-reaction">{{status.sad}}</span>
+                            </span>
+                            <span>
+                                <img src="{{asset("img/wow.png")}}" alt="">
+                                <span class="label-reaction">{{status.woow}}</span>
+                            </span>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">{% if status.enabled %}
+                        <i class="material-icons" style="color:green;float:left">check_circle</i> <span class="check-label">Enabled</span>
+                        {% else %}
+                        <i class="material-icons" style="color:red;float:left">cancel</i> <span class="check-label">Disabled</span>
+                        {% endif %}</div>
+                    </div>
+                     <div class="row">
+                        <div class="col-md-6">{% if status.comment %}
+                        <i class="material-icons" style="color:green;float:left">check_circle</i> <span class="check-label">Comment Enabled</span>
+                        {% else %}
+                        <i class="material-icons" style="color:red;float:left">cancel</i> <span class="check-label">Comment Disabled</span>
+                        {% endif %}</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4>Categories : </h4>
+                        </div>
+                        <div class="col-md-12" >
+                            {% for category in status.categories %}
+                                <span class="label label-rose " style="margin:5px;"> <b> {{category.title}} </b></span>  
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4>Languages : </h4>
+                        </div>
+                        <div class="col-md-12" >
+                            {% for language in status.languages %}
+                                <span class="label label-rose " style="margin:5px;background:#FF5722"> <b> {{language.language}} </b></span>  
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <span class="label label-rose col-md-6" style="font-size:16pt;padding:10px;background:#FF5722"> <b>{{status.viewsnumber}} </b></span>  
+                        <span class="label label-rose col-md-6" style="font-size:16pt;padding:10px;background:#FF5722"> <b>{{status.downloadsnumber}} </b></span>  
+                    </div>
+
+                 </div>
+                <div class="card-footer">
+                    <div class="price">
+                         <div class="wallpaper-logo" style="color:#040303" >
+                        {% if status.user.image == "" %}
+                            {{status.user.name}}
+                        {% else %}
+                            <img src="{{status.user.image}}" class="avatar-img" alt=""> 
+                        {% endif %}
+                         <span>{{status.user.name}}</span>
+                     </div>
+                    </div>
+                    <div class="stats pull-right">
+                       <div class="wallpaper-logo"  style="color:#040303" >{{time_ago(status.created)}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+            {% for comment in status.comments %}
+                <div class="col-md-6">
+                    <ul class="timeline timeline-simple">
+                        <li class="timeline-inverted">
+                            <div class="timeline-badge danger">
+                                <img src="{{comment.user.image}}" class="img-profile">
+                            </div>
+                            <div class="timeline-panel">
+                                <div class="timeline-heading">
+                                    <a href="{{path("user_user_edit",{id:comment.user.id})}}" title="">
+                                        <span class="label label-danger">{{comment.user.name}}</span>
+                                    </a>
+                                    <span class="pull-right" >
+                                        <a href="{{path("app_comment_delete",{id:comment.id,"status":"true"})}}"  rel="tooltip" data-placement="bottom" title="" data-original-title="Delete">
+                                            <i class="material-icons" style="color:red">delete</i>
+                                        </a>
+                                        {% if comment.enabled %}
+                                            <a href="{{path("app_comment_hide",{id:comment.id})}}"  rel="tooltip" data-placement="bottom" title="" data-original-title="Hide">
+                                                 <i class="material-icons">visibility_off</i>
+                                            </a>
+                                        {% else %}                                      
+                                            <a href="{{path("app_comment_hide",{id:comment.id})}}"  rel="tooltip" data-placement="bottom" title="" data-original-title="Show">
+                                                 <i class="material-icons">remove_red_eye</i>
+                                            </a>
+                                        {% endif %}
+                                    </span>
+                                </div>
+                                <div class="timeline-body">
+                                    <p>{{comment.contentclear}}</p>
+                                </div>
+                                <small class="pull-right label label-rose">
+                                     <span>{{time_ago(comment.created)}}</span>
+                                </small>
+                            </div>
+                        </li>
+                       
+                    </ul>
+                </div>
+                {% else %}
+                <div class="col-md-12" >
+                    <div class="card"  style="margin-top: 0px;">
+                        <div class="card-content">
+                            <center><img src="{{asset("img/bg_empty.png")}}"  style="width: auto !important;" =""></center>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock%}

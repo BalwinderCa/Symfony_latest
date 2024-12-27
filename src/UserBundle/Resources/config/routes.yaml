@@ -1,0 +1,175 @@
+# API User Routes
+api_user_get_followingstop:
+    path: /api/user/followingstop/{user}/{token}/{purchase}/
+    controller: App\UserBundle\Controller\UserController::apiFollowingstop
+
+api_user_register:
+    path: /api/user/register/{token}/{purchase}/
+    controller: App\UserBundle\Controller\UserController::apiRegister
+    methods: [POST]
+
+api_user_edit:
+    path: /api/user/edit/{token}/{purchase}/
+    controller: App\UserBundle\Controller\UserController::apiEdit
+    methods: [POST]
+
+api_user_token:
+    path: /api/user/token/{token}/{purchase}/
+    controller: App\UserBundle\Controller\UserController::apiToken
+    methods: [POST]
+
+api_user_code:
+    path: /api/user/code/{token}/{purchase}/
+    controller: App\UserBundle\Controller\UserController::apiCode
+    methods: [POST]
+
+api_user_login:
+    path: /api/user/login/{username}/{password}/{token}/{purchase}/
+    controller: App\UserBundle\Controller\UserController::apiLogin
+    methods: [GET]
+
+api_user_change_password:
+    path: /api/user/password/{id}/{password}/{new_password}/{token}/{purchase}/
+    controller: App\UserBundle\Controller\UserController::apiChangePassword
+    methods: [GET]
+
+api_user_edit_name:
+    path: /api/user/name/{id}/{name}/{key}/{token}/{purchase}/
+    controller: App\UserBundle\Controller\UserController::apiEditName
+    methods: [GET]
+
+api_user_email:
+    path: /api/user/email/{email}/{token}/{purchase}/
+    controller: App\UserBundle\Controller\UserController::apiEmail
+    methods: [GET]
+
+api_user_request:
+    path: /api/user/request/{key}/{token}/{purchase}/
+    controller: App\UserBundle\Controller\UserController::apiRequest
+    methods: [GET]
+
+api_user_reset:
+    path: /api/user/reset/{id}/{key}/{new_password}/{token}/{purchase}/
+    controller: App\UserBundle\Controller\UserController::apiReset
+    methods: [GET]
+
+api_user_check:
+    path: /api/user/check/{id}/{key}/{token}/{purchase}/
+    controller: App\UserBundle\Controller\UserController::apiCheck
+    methods: [GET]
+
+api_user_upload:
+    path: /api/user/upload/{id}/{key}/{token}/{purchase}/
+    controller: App\UserBundle\Controller\UserController::apiUpload
+
+api_user_get:
+    path: /api/user/get/{user}/{me}/{token}/{purchase}/
+    controller: App\UserBundle\Controller\UserController::apiGet
+
+api_user_follow:
+    path: /api/user/follow/{user}/{follower}/{key_}/{token}/{purchase}/
+    controller: App\UserBundle\Controller\UserController::apiFollow
+
+api_user_follow_check:
+    path: /api/user/follow/check/{user}/{follower}/{token}/{purchase}/
+    controller: App\UserBundle\Controller\UserController::apiFollowCheck
+
+api_user_get_followers:
+    path: /api/user/followers/{user}/{token}/{purchase}/
+    controller: App\UserBundle\Controller\UserController::apiFollowers
+
+api_user_get_followings:
+    path: /api/user/followings/{user}/{token}/{purchase}/
+    controller: App\UserBundle\Controller\UserController::apiFollowings
+
+# Web User Routes
+user_user_index:
+    path: /users/index.html
+    controller: App\UserBundle\Controller\UserController::index
+
+user_user_edit:
+    path: /users/edit/{id}.html
+    controller: App\UserBundle\Controller\UserController::edit
+    requirements:
+        id: \d+
+
+user_user_followers:
+    path: /users/followers/{id}.html
+    controller: App\UserBundle\Controller\UserController::followers
+    requirements:
+        id: \d+
+
+user_user_followings:
+    path: /users/followings/{id}.html
+    controller: App\UserBundle\Controller\UserController::followings
+    requirements:
+        id: \d+
+
+user_user_comments:
+    path: /users/comments/{id}.html
+    controller: App\UserBundle\Controller\UserController::comments
+    requirements:
+        id: \d+
+
+user_user_ratings:
+    path: /users/ratings/{id}.html
+    controller: App\UserBundle\Controller\UserController::ratings
+    requirements:
+        id: \d+
+
+user_user_status:
+    path: /users/status/{id}.html
+    controller: App\UserBundle\Controller\UserController::status
+    requirements:
+        id: \d+
+
+user_user_transaction:
+    path: /users/transaction/{id}.html
+    controller: App\UserBundle\Controller\UserController::transaction
+    requirements:
+        id: \d+
+
+user_user_delete:
+    path: /users/delete/{id}.html
+    controller: App\UserBundle\Controller\UserController::delete
+    requirements:
+        id: \d+
+
+user_user_delete_withdraw:
+    path: /users/delete/withdraw/{id}.html
+    controller: App\UserBundle\Controller\UserController::deleteWithdraw
+    requirements:
+        id: \d+
+
+user_user_withdraw:
+    path: /users/withdraw/{id}.html
+    controller: App\UserBundle\Controller\UserController::withdraw
+    requirements:
+        id: \d+
+
+user_user_view:
+    path: /users/view/{id}.html
+    controller: App\UserBundle\Controller\UserController::view
+    requirements:
+        id: \d+
+
+
+app_login:
+    path: /login
+    controller: App\UserBundle\Controller\SecurityController::index
+
+app_logout:
+    path: /logout
+    controller: App\UserBundle\Controller\SecurityController::logout
+
+app_password_reset_request:
+    path: /password-reset
+    controller: App\UserBundle\Controller\SecurityController::passwordResetRequest
+
+app_password_reset:
+    path: /password-reset/{token}
+    controller: App\UserBundle\Controller\SecurityController::passwordReset
+
+change_password:
+    path: /change-password
+    controller: App\UserBundle\Controller\SecurityController::changePassword

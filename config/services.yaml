@@ -1,0 +1,41 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\AppBundle\Controller\SupportController:
+        arguments:
+            $tokenApp: '%token_app%'
+            
+    App\UserBundle\Controller\SecurityController:
+        arguments:
+            $security: '@security.helper'   # Use security.helper if autowiring fails
+            $session: '@session'
+    
+    App\AppBundle\Controller\HomeController:
+        arguments:
+            $serviceAccountPath: '%env(FIREBASE_SERVICE_ACCOUNT_PATH)%'
+    
+    App\UserBundle\Controller\UserController:
+        arguments:
+            $serviceAccountPath: '%env(FIREBASE_SERVICE_ACCOUNT_PATH)%'
+        autowire: true
+
+    # Correct the namespace path for the extension
+    App\AppBundle\Resources\Twig\TimeAgoExtension:
+        tags: ['twig.extension']
+
+    # Makes classes in src/ available to be used as services
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    App\UserBundle\Service\PasswordResetService:
+        arguments:
+            $mailer: '@mailer.mailer'
+            $userRepository: '@App\UserBundle\Repository\UserRepository'
+            $entityManager: '@doctrine.orm.entity_manager'
+            $passwordHasher: '@security.password_hasher'  # This

@@ -1,0 +1,94 @@
+{% extends "@AppBundle/layout.html.twig" %}
+{% block body%}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12" style=" height: auto; text-align:center;background-image:url({{asset(user.image)}});background-position: center;background-size: 100%;text-align: center;">
+				<img src="{{asset(user.image)}}" alt="" style="border-radius:300px;margin:10px;height:100px;width:100px;border: 5px solid rgb(255, 247, 247);">
+				<h3 style=" color: white; font-weight: bold">{{user.name}}</h3>
+			</div>
+			<div  class="col-md-12" style="border:1px solid #ccc;height:70px;background:white">
+				<div class="row">
+					<div  class="col-md-2" style="border-right:1px solid #ccc;height:70px;background:white">
+						<a href="{{path("user_user_edit",{"id":user.id})}}" style="color:black;font-size:20px;line-height: 70px;font-weight: bold;">Edit infos</a>
+					</div>
+					<div  class="col-md-2" style="border-right:1px solid #ccc;height:70px;background:white">
+						<a href="{{path("user_user_followings",{"id":user.id})}}" style="color:black;font-size:20px;line-height: 70px;font-weight: bold;">{{user.users|length}} Following </a>
+					</div>
+					<div  class="col-md-2" style="border-right:1px solid #ccc;height:70px;background:white">
+						<a href="{{path("user_user_followers",{"id":user.id})}}" style="color:black;font-size:20px;line-height: 70px;font-weight: bold;">{{user.followers|length}} Followers </a>
+					</div>
+					<div  class="col-md-2" style="border-right:1px solid #ccc;height:70px;background:white">
+						<a href="{{path("user_user_status",{"id":user.id})}}" style="color:black;font-size:20px;line-height: 70px;font-weight: bold;">{{user.status|length}} Status </a>
+					</div>
+					<div  class="col-md-2" style="border-right:1px solid #ccc;height:70px;background:white">
+						<a href="{{path("user_user_transaction",{"id":user.id})}}" style="color:black;font-size:20px;line-height: 70px;font-weight: bold;">Earning </a>
+					</div>
+					<div  class="col-md-2" style="height:70px;background:white">
+						<a href="{{path("user_user_withdraw",{"id":user.id})}}" style="color:black;font-size:20px;line-height: 70px;font-weight: bold;">Withdrawal</a>
+					</div>
+				</div>
+			</div>
+			<div  class="col-md-12" >
+				<div class="row">
+				<div class="card">
+					<div class="card-content">
+						<div class="table-responsive">
+<table class="table" width="100%">
+								<thead class="text-primary">
+									<tr>
+										<th>User</th>
+										<th>Method</th>
+										<th>Account</th>
+										<th>Amount</th>
+										<th>Points</th>
+										<th>Date</th>
+										<th>State</th>
+										<th width="170px">Action</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for withdrawals in pagination %}
+										<tr>
+											<td>{{withdrawals.user.name}}</td>
+											<td>{{withdrawals.methode}}</td>
+											<td>{{withdrawals.account}}</td>
+											<td>{{withdrawals.amount}}</td>
+											<td>{{withdrawals.points}} P</td>
+											<td>{{withdrawals.created|date("Y/m/d - H:i")}}</td>
+											<td><label class="label  label-success" {% if withdrawals.type == "Pending" %}   style=" background-color: #ffb818 !important; "{% elseif withdrawals.type == "Paid" %}  style=" background-color: #25ce2a !important; " {% elseif withdrawals.type == "Rejected" %}  style=" background-color: #f92d2d !important; " {% endif %}>{{withdrawals.type}}</label></td>
+											<td>
+												<a href="{{path("app_payment_withdrawal_approve",{id:withdrawals.id})}}" rel="tooltip" data-placement="left" class=" btn btn-primary btn-xs btn-round" data-original-title="Paid">
+													<i class="material-icons">check</i>
+												</a>
+												<a href="{{path("app_payment_withdrawal_reject",{id:withdrawals.id})}}" rel="tooltip" data-placement="left" class=" btn btn-primary btn-xs btn-round" data-original-title="Reject">
+													<i class="material-icons">close</i>
+												</a>
+												<a href="{{path("app_payment_withdrawal_delete",{id:withdrawals.id})}}" rel="tooltip" data-placement="left" class=" btn btn-danger btn-xs btn-round" data-original-title="Delete">
+													<i class="material-icons">delete</i>
+												</a>
+											</td>
+										</tr>
+									{% else %}
+										<tr>
+											<td colspan="4">
+												<br>
+												<br>
+												<center><img src="{{asset("img/bg_empty.png")}}"  style="width: auto !important;" =""></center>
+												<br>
+												<br>
+											</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class=" pull-right">
+						{{ knp_pagination_render(pagination) }}
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+{% endblock%}

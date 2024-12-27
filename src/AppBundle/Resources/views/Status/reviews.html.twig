@@ -1,0 +1,120 @@
+{% extends "@AppBundle/layout.html.twig" %}
+{% block body%}
+<div class="container-fluid">
+		<div class="row">
+			<div class="row">
+				<div class="col-md-4">
+					<a href="{{path("app_status_reviews")}}" class="btn  btn-lg btn-warning col-md-12"><i class="material-icons" style="font-size: 30px;">refresh</i> Refresh</a>
+				</div>
+				<div class="col-md-4">
+					<a class="btn btn btn-lg btn-yellow col-md-12"><i class="material-icons" style="font-size: 30px;">video_library</i> {{videos_count}} video</a>
+				</div>
+				<div class="col-md-4">
+					<a href="{{path("app_video_add")}}" class="btn btn-rose btn-lg pull-right add-button col-md-12" title=""><i class="material-icons" style="font-size: 30px;">add_box</i> NEW video </a>
+				</div>
+			</div>
+			<div class="row">
+       		{% for status in videos %}
+					{% if status.type == "quote" %}
+					<div class="col-md-4" style="height:370px">
+						<div class="card card-product"  >
+			
+							<div class="quote-item" style="background-color:#{{status.color}};height: 305px;">
+								{{status.clear}}
+							</div>
+							<div class="card-content" style=" padding: 0px 0px;">
+								<div class="card-actions" style="top: -300px;">
+							                        <a href="{{path("app_status_view",{id:status.id})}}" class="btn btn-info btn-simple" rel="tooltip" data-placement="bottom" title="" data-original-title="View">
+							                            <i class="material-icons">remove_red_eye</i>
+							                        </a>
+							                        <a href="{{path("app_status_review_quote",{id:status.id})}}" class="btn btn-success btn-simple" rel="tooltip" data-placement="bottom" title="" data-original-title="Review">
+							                            <i class="material-icons">check</i>
+							                        </a>
+							                        <a href="{{path("app_status_delete",{id:status.id})}}" class="btn btn-danger btn-simple" rel="tooltip" data-placement="bottom" title="" data-original-title="Delete">
+							                            <i class="material-icons">close</i>
+							                        </a>
+									<a href="" class="btn btn-danger btn-simple pull-right" style="background-color: #cccccc7d !important;"><i class="material-icons">format_quote</i></a>
+								</div>
+							</div>
+							<div class="card-footer" >
+								<div class="price">
+									<div class="wallpaper-logo" >
+										{% if status.user.image == "" %}
+											{{status.user.name}}
+										{% else %}
+											<img src="{{status.user.image}}" class="avatar-img" alt="">
+										{% endif %}
+										<span>{{status.user.name}}</span>
+									</div>
+								</div>
+								<div class="stats pull-right">
+									<div class="wallpaper-logo" >{{time_ago(status.created)}}</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					{% else %}
+					<div class="col-md-4" style="height:370px">
+						<div class="card card-product"  >
+							<div class="wallpaper-title" >
+								{{status.title}}
+							</div>
+							<img class="img " style="height:auto;background-color:#fff;height:250px" src="{{status.media.link|imagine_filter("status_thumb")}}">
+							<div class="card-content" style=" padding: 0px 0px;">
+								<div class="card-actions">
+									<a href="{{path("app_status_view",{id:status.id})}}" class="btn btn-info btn-simple" rel="tooltip" data-placement="bottom" title="" data-original-title="View">
+										<i class="material-icons">remove_red_eye</i>
+									</a>
+									<a href="{{path("app_status_review",{id:status.id})}}" class="btn btn-success btn-simple" rel="tooltip" data-placement="bottom" title="" data-original-title="Review">
+							                            <i class="material-icons">check</i>
+							                    </a>
+	
+									<a href="{{path("app_status_delete",{id:status.id})}}" class="btn btn-danger btn-simple" rel="tooltip" data-placement="bottom" title="" data-original-title="Delete">
+										<i class="material-icons">close</i>
+									</a>
+									{% if status.type =="image" %}
+										<a href="" class="btn btn-danger btn-simple pull-right" style="background-color: #cccccc7d !important;"><i class="material-icons">image</i></a>
+									{% elseif status.type == "gif" %}
+										<a href="" class="btn btn-danger btn-simple pull-right" style="background-color: #cccccc7d !important;"><i class="material-icons">gif</i></a>
+									{% else %}	    
+										<a href="" class="btn btn-danger btn-simple pull-right" style="background-color: #cccccc7d !important;"><i class="material-icons">videocam</i></a>
+									{% endif %}
+								</div>
+							</div>
+							<div class="card-footer">
+								<div class="price">
+									<div class="wallpaper-logo" >
+										{% if status.user.image == "" %}
+											{{status.user.name}}
+										{% else %}
+											<img src="{{status.user.image}}" class="avatar-img" alt="">
+										{% endif %}
+										<span>{{status.user.name}}</span>
+									</div>
+								</div>
+								<div class="stats pull-right">
+									<div class="wallpaper-logo" >{{time_ago(status.created)}}</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					{% endif %}
+	          {% else %}
+					<div class="col-md-12">
+						<div class="card">
+							<div class="card-content">
+								<br>
+								<br>
+								<center><img src="{{asset("img/bg_empty.png")}}"  style="width: auto !important;" =""></center>
+								<br>
+								<br>
+							</div>
+						</div>
+					</div>
+            {% endfor %}
+       			</div>
+            <div class=" pull-right">
+        {{ knp_pagination_render(videos) }}
+      </div>
+</div>
+{% endblock%}
