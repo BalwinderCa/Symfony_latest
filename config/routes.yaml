@@ -11,3 +11,5 @@ media_bundle:
 # Loading user bundle's routes
 user_bundle:
     resource: '../src/UserBundle/Resources/config/routes.yaml'
+
+    

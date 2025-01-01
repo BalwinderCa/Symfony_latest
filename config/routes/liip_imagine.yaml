@@ -1,2 +1,11 @@
-_liip_imagine:
-    resource: "@LiipImagineBundle/Resources/config/routing.yaml"
+liip_imagine_filter:
+    path: /media/cache/resolve/{filter}/{path}
+    controller: Liip\ImagineBundle\Controller\ImagineController::filter
+    requirements:
+        path: .+
+
+liip_imagine_filter_runtime:
+    path: /media/cache/runtime/{filter}/{hash}/{path}
+    controller: Liip\ImagineBundle\Controller\ImagineController::filterRuntime
+    requirements:
+        path: .+
