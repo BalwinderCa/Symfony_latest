@@ -19,6 +19,6 @@ class ElementController extends AbstractController
     #[Route('/menu', name: 'app_element_menu')]
     public function menu()
     {
-        return $this->render('@AppBundle/elements/menu.html.twig');
+        return $this->render('@AppBundle/Elements/menu.html.twig');
     }
 }

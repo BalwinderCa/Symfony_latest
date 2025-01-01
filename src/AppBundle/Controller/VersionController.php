@@ -42,7 +42,7 @@ class VersionController extends AbstractController
             return $this->redirectToRoute('app_version_index');
         }
 
-        return $this->render('@AppBundle/version/add.html.twig', [
+        return $this->render('@AppBundle/Version/add.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -96,7 +96,7 @@ class VersionController extends AbstractController
         $em = $this->entityManager;
         $versions = $em->getRepository(Version::class)->findBy([], ["code" => "asc"]);
 
-        return $this->render('@AppBundle/version/index.html.twig', [
+        return $this->render('@AppBundle/Version/index.html.twig', [
             'versions' => $versions
         ]);
     }
@@ -125,7 +125,7 @@ class VersionController extends AbstractController
             return $this->redirectToRoute('app_version_index');
         }
 
-        return $this->render('@AppBundle/version/delete.html.twig', [
+        return $this->render('@AppBundle/Version/delete.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -150,7 +150,7 @@ class VersionController extends AbstractController
             return $this->redirectToRoute('app_version_index');
         }
 
-        return $this->render('@AppBundle/version/edit.html.twig', [
+        return $this->render('@AppBundle/Version/edit.html.twig', [
             'form' => $form->createView()
         ]);
     }

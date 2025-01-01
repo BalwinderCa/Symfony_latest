@@ -43,7 +43,7 @@ class CommentController extends AbstractController
 
         $comments = $em->getRepository(Comment::class)->findAll();
 
-        return $this->render('@AppBundle/comment/index.html.twig', [
+        return $this->render('@AppBundle/Comment/index.html.twig', [
             'pagination' => $pagination,
             'comments' => $comments,
         ]);
@@ -60,7 +60,7 @@ class CommentController extends AbstractController
         $status = $em->getRepository(Status::class)->find($id);
         $comments = $status ? $em->getRepository(Comment::class)->findBy(['status' => $status]) : [];
 
-        return $this->render('@AppBundle/comment/api_by.html.twig', [
+        return $this->render('@AppBundle/Comment/api_by.html.twig', [
             'comments' => $comments,
         ]);
     }
@@ -150,7 +150,7 @@ class CommentController extends AbstractController
             return $this->redirectToRoute('app_comment_index');
         }
 
-        return $this->render('@AppBundle/comment/delete.html.twig', [
+        return $this->render('@AppBundle/Comment/delete.html.twig', [
             'form' => $form->createView(),
         ]);
     }

@@ -103,7 +103,7 @@ class LanguageController extends AbstractController
             }
         }
 
-        return $this->render('@AppBundle/language/add.html.twig', ['form' => $form->createView()]);
+        return $this->render('@AppBundle/Language/add.html.twig', ['form' => $form->createView()]);
     }
 
     #[Route('/language', name: 'app_language_index')]
@@ -111,7 +111,7 @@ class LanguageController extends AbstractController
     {
         $em = $this->entityManager;
         $languages = $em->getRepository(Language::class)->findBy([], ['position' => 'asc']);
-        return $this->render('@AppBundle/language/index.html.twig', ['languages' => $languages]);
+        return $this->render('@AppBundle/Language/index.html.twig', ['languages' => $languages]);
     }
 
     #[Route('/language/up/{id}', name: 'app_language_up')]
@@ -201,7 +201,7 @@ class LanguageController extends AbstractController
             return $this->redirectToRoute('app_language_index');
         }
 
-        return $this->render('@AppBundle/language/delete.html.twig', ['form' => $form->createView()]);
+        return $this->render('@AppBundle/Language/delete.html.twig', ['form' => $form->createView()]);
     }
 
     #[Route('/language/edit/{id}', name: 'app_language_edit')]
@@ -240,6 +240,6 @@ class LanguageController extends AbstractController
             return $this->redirectToRoute('app_language_index');
         }
 
-        return $this->render('@AppBundle/language/edit.html.twig', ['form' => $form->createView()]);
+        return $this->render('@AppBundle/Language/edit.html.twig', ['form' => $form->createView()]);
     }
 }

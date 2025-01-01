@@ -73,7 +73,7 @@ class SupportController extends AbstractController
         // Fetch the actual list of supports
         $supports = $this->entityManager->getRepository(Support::class)->findAll();
 
-        return $this->render('@AppBundle/support/index.html.twig', [
+        return $this->render('@AppBundle/Support/index.html.twig', [
             'pagination' => $pagination,
             'supports' => $supports,  // Pass supports to the template
         ]);
@@ -88,7 +88,7 @@ class SupportController extends AbstractController
             throw new NotFoundHttpException("Page not found");
         }
 
-        return $this->render('@AppBundle/support/view.html.twig', [
+        return $this->render('@AppBundle/Support/view.html.twig', [
             "support" => $support
         ]);
     }
@@ -115,7 +115,7 @@ class SupportController extends AbstractController
             return $this->redirectToRoute('app_support_index');
         }
 
-        return $this->render('@AppBundle/support/delete.html.twig', [
+        return $this->render('@AppBundle/Support/delete.html.twig', [
             'form' => $form->createView()
         ]);
     }
