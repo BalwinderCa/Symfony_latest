@@ -29,67 +29,67 @@ class SettingsType extends AbstractType
         ]);
 
         // Checkbox fields
-        $builder->add('adduser', CheckboxType::class, [
+        $builder->add('adduser', TextType::class, [
             'label' => 'Add User',
             'required' => false,
             'data' => false,  // Default value (set to false if not checked)
         ]);
-        $builder->add('sharevideo', CheckboxType::class, [
+        $builder->add('sharevideo', TextType::class, [
             'label' => 'Share Video',
             'required' => false,
             'data' => false,  // Default value (set to false if not checked)
         ]);
-        $builder->add('viewvideo', CheckboxType::class, [
+        $builder->add('viewvideo', TextType::class, [
             'label' => 'View Video',
             'required' => false,
             'data' => false,  // Default value (set to false if not checked)
         ]);
-        $builder->add('addvideo', CheckboxType::class, [
+        $builder->add('addvideo', TextType::class, [
             'label' => 'Add Video',
             'required' => false,
             'data' => false,  // Default value (set to false if not checked)
         ]);
-        $builder->add('shareimage', CheckboxType::class, [
+        $builder->add('shareimage', TextType::class, [
             'label' => 'Share Image',
             'required' => false,
             'data' => false,  // Default value (set to false if not checked)
         ]);
-        $builder->add('viewimage', CheckboxType::class, [
+        $builder->add('viewimage', TextType::class, [
             'label' => 'View Image',
             'required' => false,
             'data' => false,  // Default value (set to false if not checked)
         ]);
-        $builder->add('addimage', CheckboxType::class, [
+        $builder->add('addimage', TextType::class, [
             'label' => 'Add Image',
             'required' => false,
             'data' => false,  // Default value (set to false if not checked)
         ]);
-        $builder->add('sharegif', CheckboxType::class, [
+        $builder->add('sharegif', TextType::class, [
             'label' => 'Share GIF',
             'required' => false,
             'data' => false,  // Default value (set to false if not checked)
         ]);
-        $builder->add('viewgif', CheckboxType::class, [
+        $builder->add('viewgif', TextType::class, [
             'label' => 'View GIF',
             'required' => false,
             'data' => false,  // Default value (set to false if not checked)
         ]);
-        $builder->add('addgif', CheckboxType::class, [
+        $builder->add('addgif', TextType::class, [
             'label' => 'Add GIF',
             'required' => false,
             'data' => false,  // Default value (set to false if not checked)
         ]);
-        $builder->add('sharequote', CheckboxType::class, [
+        $builder->add('sharequote', TextType::class, [
             'label' => 'Share Quote',
             'required' => false,
             'data' => false,  // Default value (set to false if not checked)
         ]);
-        $builder->add('viewquote', CheckboxType::class, [
+        $builder->add('viewquote', TextType::class, [
             'label' => 'View Quote',
             'required' => false,
             'data' => false,  // Default value (set to false if not checked)
         ]);
-        $builder->add('addquote', CheckboxType::class, [
+        $builder->add('addquote', TextType::class, [
             'label' => 'Add Quote',
             'required' => false,
             'data' => false,  // Default value (set to false if not checked)
