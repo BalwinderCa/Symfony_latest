@@ -53,7 +53,7 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/api/categories/popular/{token}', name: 'app_category_api_popular')]
-    public function apiPopular(Request $request, string $token): Response
+    public function api_popular(Request $request, string $token): Response
     {
         if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
@@ -101,7 +101,7 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/api/categories/all/{token}', name: 'app_category_api_all')]
-    public function apiAll(Request $request, string $token): Response
+    public function api_all(Request $request, string $token): Response
     {
         if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");

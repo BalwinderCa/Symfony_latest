@@ -20,6 +20,7 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 
 class LanguageController extends AbstractController
 {   
@@ -27,13 +28,16 @@ class LanguageController extends AbstractController
     private $entityManager;
     private  $params;
     private $token;
+    private CacheManager $imagineCacheManager;
 
      // Inject the EntityManagerInterface into the controller
-     public function __construct(EntityManagerInterface $entityManager,ParameterBagInterface $params)
+     public function __construct(EntityManagerInterface $entityManager,ParameterBagInterface $params,CacheManager $imagineCacheManager)
      {
          $this->entityManager = $entityManager;
          $this->params = $params;
          $this->token = "4F5A9C3D9A86FA54EACEDDD635185";
+         $this->imagineCacheManager = $imagineCacheManager;
+         
      }
 
     #[Route('/api/languages/{token}', name: 'api_languages_all')]
@@ -44,13 +48,13 @@ class LanguageController extends AbstractController
         }
 
         $em = $this->entityManager;
-        $imagineCacheManager = $this->get('liip_imagine.cache.manager');
+       // $imagineCacheManager = $this->get('liip_imagine.cache.manager');
         $languages = $em->getRepository(Language::class)->findBy(['enabled' => true], ['position' => 'asc']);
         $list = [];
         $s = [
             "id" => 0,
             "language" => "All languages",
-            "image" => $imagineCacheManager->getBrowserPath("/img/global.png", 'language_thumb_api')
+            "image" => $this->imagineCacheManager->getBrowserPath("/img/global.png", 'language_thumb_api')
         ];
         $list[] = $s;
 
@@ -58,7 +62,7 @@ class LanguageController extends AbstractController
             $s = [
                 "id" => $language->getId(),
                 "language" => $language->getLanguage(),
-                "image" => $imagineCacheManager->getBrowserPath($language->getMedia()->getLink(), 'language_thumb_api')
+                "image" => $this->imagineCacheManager->getBrowserPath($language->getMedia()->getLink(), 'language_thumb_api')
             ];
             $list[] = $s;
         }

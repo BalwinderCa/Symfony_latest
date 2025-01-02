@@ -17,3 +17,4 @@ api_media_delete:
 media_api_upload:
     path: /api/medias/upload/{token}/
     controller: App\MediaBundle\Controller\MediaController::apiUpload
+

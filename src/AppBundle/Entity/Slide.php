@@ -7,6 +7,7 @@ namespace App\AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\MediaBundle\Entity\Media;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\File;
 
 #[ORM\Entity(repositoryClass: 'App\AppBundle\Repository\SlideRepository')]
 #[ORM\Table(name: 'slide_table')]
@@ -15,7 +16,7 @@ class Slide
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     #[ORM\Column(type: 'integer')]
-    private ?int $id = null;  // Allowing the id to be nullable
+    private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Assert\NotBlank]
@@ -45,11 +46,17 @@ class Slide
     private int $position;
 
     #[Assert\File(mimeTypes: ['image/jpeg', 'image/png'], maxSize: '40M')]
-    private ?\Symfony\Component\HttpFoundation\File\File $file;
+    private ?File $file = null; // Set the default value to null
+
+    public function __construct()
+    {
+        // Initialize file as null to avoid uninitialized property issues
+        $this->file = null;
+    }
 
     public function __toString(): string
     {
-        return $this->title;  // You can return any string representation
+        return $this->title;
     }
 
     public function getId(): int
@@ -134,13 +141,13 @@ class Slide
         return $this->position;
     }
 
-    public function setFile(?\Symfony\Component\HttpFoundation\File\File $file): self
+    public function setFile(?File $file): self
     {
         $this->file = $file;
         return $this;
     }
 
-    public function getFile(): ?\Symfony\Component\HttpFoundation\File\File
+    public function getFile(): ?File
     {
         return $this->file;
     }

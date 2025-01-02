@@ -10,8 +10,8 @@
                 <div class="card-content">
                     <h4 class="card-title">New Slide</h4>
                     {{form_start(form)}}
-                        <label class="control-label">Slide Title</label>
                         <div class="form-group label-floating">
+                        <label class="control-label">Slide Title</label>
                             {{form_widget(form.title,{value: app.request.query.get("title"),"attr":{"class":"form-control"}})}}
                             <span class="validate-input">{{form_errors(form.title)}}</span>
                         </div>

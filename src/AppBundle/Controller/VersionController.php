@@ -51,7 +51,7 @@ class VersionController extends AbstractController
     }
 
     #[Route('/api/version/check/{code}/{token}', name: 'api_version_check')]
-    public function apiCheck(Request $request, $code, $token)
+    public function api_check(Request $request, $code, $token)
     {
         if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");

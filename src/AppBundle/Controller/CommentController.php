@@ -51,8 +51,16 @@ class CommentController extends AbstractController
         ]);
     }
 
+    // Helper function to calculate time difference
+    private function getTimeDifference($createdDateTime)
+    {
+        $currentDateTime = new \DateTime();
+        $interval = $currentDateTime->diff($createdDateTime);
+        return $interval->format('%y years, %m months, %d days, %h hours, %i minutes ago');
+    }
+
     #[Route('/api/comments/{id}/{token}', name: 'app_comment_api_list')]
-    public function apiList($id, $token, SerializerInterface $serializer)
+    public function api_list($id, $token, SerializerInterface $serializer)
     {
         if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
@@ -62,9 +70,23 @@ class CommentController extends AbstractController
         $status = $em->getRepository(Status::class)->find($id);
         $comments = $status ? $em->getRepository(Comment::class)->findBy(['status' => $status]) : [];
 
-        return $this->render('@AppBundle/Comment/api_by.html.twig', [
-            'comments' => $comments,
-        ]);
+        $list=array();
+        foreach ($comments as $key => $comment) {
+            $a["id"]=$comment->getId();
+            $a["user"]=$comment->getUser()->getName();
+            $a["image"]=$comment->getUser()->getImage();
+            $a["content"]=$comment->getContent();
+            $a["enabled"]=$comment->getEnabled();
+            $trusted = "flase";
+            if ($comment->getUser()->getTrusted()) {
+                $trusted = "true";
+            }
+            $a["trusted"]=$trusted;
+            $a["created"]=$this->getTimeDifference($comment->getCreated());
+            $list[]=$a;
+        }
+
+        return new JsonResponse($list, JSON_UNESCAPED_UNICODE);
     }
 
     #[Route('/api/comments/add/{token}', name: 'app_comment_api_add')]

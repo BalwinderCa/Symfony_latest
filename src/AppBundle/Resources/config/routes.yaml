@@ -1,498 +1,423 @@
-# Home Routes
 app_home_index:
-    path: /
-    controller: App\AppBundle\Controller\HomeController::index
-
+    path:     /
+    controller:  App\AppBundle\Controller\HomeController::index
 app_home_settings:
-    path: /settings.html
-    controller: App\AppBundle\Controller\HomeController::settings
-
+    path:     /settings.html
+    controller:  App\AppBundle\Controller\HomeController::settings 
 app_home_notif_status:
-    path: /notif/status.html
-    controller: App\AppBundle\Controller\HomeController::notifStatus
-
+    path:     /notif/status.html
+    controller:  App\AppBundle\Controller\HomeController::notifStatus 
 app_home_notif_url:
-    path: /notif/url.html
-    controller: App\AppBundle\Controller\HomeController::notifUrl
-
+    path:     /notif/url.html
+    controller:  App\AppBundle\Controller\HomeController::notifUrl 
 app_home_notif_user_status:
-    path: /notif/user_status.html
-    controller: App\AppBundle\Controller\HomeController::notifUserStatus
-
+    path:     /notif/user_status.html
+    controller:  App\AppBundle\Controller\HomeController::notifUserStatus 
 app_home_notif_user_payment:
-    path: /notif/user_payment.html
-    controller: App\AppBundle\Controller\HomeController::notifUserPayment
-
+    path:     /notif/user_payment.html
+    controller:  App\AppBundle\Controller\HomeController::notifUserPayment 
 app_home_notif_user:
-    path: /notif/user.html
-    controller: App\AppBundle\Controller\HomeController::notifUser
-
+    path:     /notif/user.html
+    controller:  App\AppBundle\Controller\HomeController::notifUser 
 app_home_notif_category:
-    path: /notif/category.html
-    controller: App\AppBundle\Controller\HomeController::notifCategory
-
+    path:     /notif/category.html
+    controller:  App\AppBundle\Controller\HomeController::notifCategory 
 api_home_api_device:
-    path: /api/device/{tkn}/{token}/{purchase}/
-    controller: App\AppBundle\Controller\HomeController::apiDevice
-
-# Support Routes
+    path:   /api/device/{tkn}/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\HomeController::api_device 
 app_support_index:
-    path: /support/index.html
-    controller: App\AppBundle\Controller\SupportController::index
-
+    path:     /support/index.html
+    controller:  App\AppBundle\Controller\SupportController::index 
 app_support_view:
-    path: /support/view/{id}.html
-    controller: App\AppBundle\Controller\SupportController::view
-    requirements:
-        id: \d+
-
+    path:     /support/view/{id}.html
+    controller:  App\AppBundle\Controller\SupportController::view 
 app_support_delete:
-    path: /support/delete/{id}.html
-    controller: App\AppBundle\Controller\SupportController::delete
-    requirements:
-        id: \d+
-
+    path:     /support/delete/{id}.html
+    controller:  App\AppBundle\Controller\SupportController::delete 
 api_support_add:
-    path: /api/support/add/{token}/{purchase}/
-    controller: App\AppBundle\Controller\SupportController::apiAdd
+    path:     /api/support/add/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\SupportController::api_add 
     methods: POST
 
 
 
-
-# Slide Routes
+#slide
 app_slide_add:
     path: /slide/add.html
-    controller: App\AppBundle\Controller\SlideController::add
-
+    controller:  App\AppBundle\Controller\SlideController::add
 app_slide_index:
     path: /slide/index.html
-    controller: App\AppBundle\Controller\SlideController::index
-
+    controller:  App\AppBundle\Controller\SlideController::index
 app_slide_edit:
     path: /slide/{id}.html
-    controller: App\AppBundle\Controller\SlideController::edit
+    controller:  App\AppBundle\Controller\SlideController::edit
     requirements:
-        id: \d+
-
+        id:  \d+
 app_slide_delete:
     path: /slide/delete/{id}.html
-    controller: App\AppBundle\Controller\SlideController::delete
+    controller:  App\AppBundle\Controller\SlideController::delete
     requirements:
-        id: \d+
-
+        id:  \d+
 app_slide_up:
     path: /slide/up/{id}.html
-    controller: App\AppBundle\Controller\SlideController::up
+    controller:  App\AppBundle\Controller\SlideController::up
     requirements:
-        id: \d+
-
+        id:  \d+
 app_slide_down:
     path: /slide/down/{id}.html
-    controller: App\AppBundle\Controller\SlideController::down
+    controller:  App\AppBundle\Controller\SlideController::down
     requirements:
-        id: \d+
-
+        id:  \d+
 api_slide_all:
-    path: /api/slide/all/{token}/{purchase}/
-    controller: App\AppBundle\Controller\SlideController::apiAll
+    path:     /api/slide/all/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\SlideController::api_all 
 
 
 
-# Payments Routes
+#payments 
 app_payment_withdrawal:
-    path: /withdrawals.html
-    controller: App\AppBundle\Controller\PaymentController::withdrawal
-
+    path:     /withdrawals.html
+    controller:  App\AppBundle\Controller\PaymentController::withdrawal 
 app_payment_withdrawal_delete:
-    path: /withdrawals/delete/{id}.html
-    controller: App\AppBundle\Controller\PaymentController::delete
+    path:     /withdrawals/delete/{id}.html
+    controller:  App\AppBundle\Controller\PaymentController::delete 
     requirements:
-        id: \d+
-
+        user: \d+
 app_payment_withdrawal_approve:
-    path: /withdrawals/approve/{id}.html
-    controller: App\AppBundle\Controller\PaymentController::approve
+    path:     /withdrawals/approve/{id}.html
+    controller:  App\AppBundle\Controller\PaymentController::approve 
     requirements:
-        id: \d+
-
+        user: \d+
 app_payment_withdrawal_reject:
-    path: /withdrawals/reject/{id}.html
-    controller: App\AppBundle\Controller\PaymentController::reject
+    path:     /withdrawals/reject/{id}.html
+    controller:  App\AppBundle\Controller\PaymentController::reject 
     requirements:
-        id: \d+
-
+        user: \d+
 api_transaction_by_user:
-    path: /api/transaction/by/user/{user}/{key}/{token}/{purchase}/
-    controller: App\AppBundle\Controller\PaymentController::apiTransactionByUser
+    path:     /api/transaction/by/user/{user}/{key}/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\PaymentController::api_transaction_by_user 
     requirements:
         user: \d+
-
 api_withdrawals_by_user:
-    path: /api/withdrawals/by/user/{user}/{key}/{token}/{purchase}/
-    controller: App\AppBundle\Controller\PaymentController::apiWithdrawalsByUser
+    path:     /api/withdrawals/by/user/{user}/{key}/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\PaymentController::api_withdrawals_by_user
     requirements:
         user: \d+
-
 api_earning_by_user:
-    path: /api/earning/by/user/{user}/{key}/{token}/{purchase}/
-    controller: App\AppBundle\Controller\PaymentController::apiEarningByUser
+    path:     /api/earning/by/user/{user}/{key}/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\PaymentController::api_earning_by_user
     requirements:
         user: \d+
-
 api_request_by_user:
-    path: /api/request/withdrawal/{token}/{purchase}/
-    controller: App\AppBundle\Controller\PaymentController::apiRequestByUser
+    path:     /api/request/withdrawal/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\PaymentController::api_request_by_user
     methods: POST
-
-# Category Routes
 app_category_index:
     path: /category/index.html
-    controller: App\AppBundle\Controller\CategoryController::index
+    controller:  App\AppBundle\Controller\CategoryController::index
 
 app_category_add:
     path: /category/add.html
-    controller: App\AppBundle\Controller\CategoryController::add
+    controller:  App\AppBundle\Controller\CategoryController::add
 
 app_category_edit:
     path: /category/edit/{id}.html
-    controller: App\AppBundle\Controller\CategoryController::edit
+    controller:  App\AppBundle\Controller\CategoryController::edit
     requirements:
-        id: \d+
+        id:  \d+
 
 app_category_delete:
     path: /category/delete/{id}.html
-    controller: App\AppBundle\Controller\CategoryController::delete
+    controller:  App\AppBundle\Controller\CategoryController::delete
     requirements:
-        id: \d+
+        id:  \d+
 
 app_category_up:
     path: /category/up/{id}.html
-    controller: App\AppBundle\Controller\CategoryController::up
+    controller:  App\AppBundle\Controller\CategoryController::up
     requirements:
-        id: \d+
+        id:  \d+
 
 app_category_down:
     path: /category/down/{id}.html
-    controller: App\AppBundle\Controller\CategoryController::down
+    controller:  App\AppBundle\Controller\CategoryController::down
     requirements:
-        id: \d+
-
+        id:  \d+
 api_category_all:
-    path: /api/category/all/{token}/{purchase}/
-    controller: App\AppBundle\Controller\CategoryController::apiAll
-
+    path:     /api/category/all/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\CategoryController::api_all
 api_category_popular:
-    path: /api/category/popular/{token}/{purchase}/
-    controller: App\AppBundle\Controller\CategoryController::apiPopular
-
-# Version Routes
+    path:     /api/category/popular/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\CategoryController::api_popular
+#version
 app_version_add:
     path: /version/add.html
-    controller: App\AppBundle\Controller\VersionController::add
-
+    controller:  App\AppBundle\Controller\VersionController::add
 app_version_index:
     path: /version/index.html
-    controller: App\AppBundle\Controller\VersionController::index
-
+    controller:  App\AppBundle\Controller\VersionController::index
 app_version_edit:
     path: /version/edit/{id}.html
-    controller: App\AppBundle\Controller\VersionController::edit
+    controller:  App\AppBundle\Controller\VersionController::edit
     requirements:
-        id: \d+
-
+        id:  \d+
 app_version_delete:
     path: /version/delete/{id}.html
-    controller: App\AppBundle\Controller\VersionController::delete
+    controller:  App\AppBundle\Controller\VersionController::delete
     requirements:
-        id: \d+
-
+        id:  \d+
 api_version_check:
     path: /api/version/check/{code}/{token}/{purchase}/
-    controller: App\AppBundle\Controller\VersionController::apiCheck
+    controller:  App\AppBundle\Controller\VersionController::api_check
     requirements:
-        code: \d+
+        code:  \d+
 
+#video
 
-# Video Routes
 app_status_index:
     path: /status/index.html
-    controller: App\AppBundle\Controller\StatusController::index
-
+    controller:  App\AppBundle\Controller\StatusController::index
 app_video_edit:
     path: /video/{id}.html
-    controller: App\AppBundle\Controller\StatusController::editVideo
+    controller:  App\AppBundle\Controller\StatusController::editVideo
     requirements:
-        id: \d+
-
+        id:  \d+
 app_video_add:
     path: /video/add.html
-    controller: App\AppBundle\Controller\StatusController::addVideo
-
+    controller:  App\AppBundle\Controller\StatusController::addVideo
 app_video_addurl:
     path: /video/addurl.html
-    controller: App\AppBundle\Controller\StatusController::addVideoUrl
-
+    controller:  App\AppBundle\Controller\StatusController::addVideoUrl
 app_video_editurl:
     path: /videourl/{id}.html
-    controller: App\AppBundle\Controller\StatusController::editVideourl
+    controller:  App\AppBundle\Controller\StatusController::editVideourl
     requirements:
-        id: \d+
+        id:  \d+
 
 app_image_add:
     path: /image/add.html
-    controller: App\AppBundle\Controller\StatusController::addImage
+    controller:  App\AppBundle\Controller\StatusController::addImage
 
 app_image_edit:
     path: /image/{id}.html
-    controller: App\AppBundle\Controller\StatusController::editImage
+    controller:  App\AppBundle\Controller\StatusController::editImage
     requirements:
-        id: \d+
+        id:  \d+
 
 app_gif_add:
     path: /gif/add.html
-    controller: App\AppBundle\Controller\StatusController::addGif
-
+    controller:  App\AppBundle\Controller\StatusController::addGif
 app_gif_edit:
     path: /gif/{id}.html
-    controller: App\AppBundle\Controller\StatusController::editGif
+    controller:  App\AppBundle\Controller\StatusController::editGif
     requirements:
-        id: \d+
-
+        id:  \d+
 app_quote_add:
     path: /quote/add.html
-    controller: App\AppBundle\Controller\StatusController::addQuote
-
+    controller:  App\AppBundle\Controller\StatusController::addQuote
 app_quote_edit:
     path: /quote/{id}.html
-    controller: App\AppBundle\Controller\StatusController::editQuote
+    controller:  App\AppBundle\Controller\StatusController::editQuote
     requirements:
-        id: \d+
-
+        id:  \d+
 app_status_view:
     path: /status/view/{id}.html
-    controller: App\AppBundle\Controller\StatusController::view
+    controller:  App\AppBundle\Controller\StatusController::view
     requirements:
-        id: \d+
-
+        id:  \d+
 app_status_reviews:
     path: /status/reviews.html
-    controller: App\AppBundle\Controller\StatusController::reviews
-
+    controller:  App\AppBundle\Controller\StatusController::reviews
 app_status_delete:
     path: /status/delete/{id}.html
-    controller: App\AppBundle\Controller\StatusController::delete
+    controller:  App\AppBundle\Controller\StatusController::delete
     requirements:
-        id: \d+
-
-# API Routes
+        id:  \d+
 api_status_all:
-    path: /api/status/all/{page}/{order}/{language}/{token}/{purchase}/
-    controller: App\AppBundle\Controller\StatusController::apiAll
+    path:     /api/status/all/{page}/{order}/{language}/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\StatusController::api_all
     requirements:
         page: \d+
-
 api_status_my:
-    path: /api/status/my/{page}/{user}/{token}/{purchase}/
-    controller: App\AppBundle\Controller\StatusController::apiMy
+    path:     /api/status/my/{page}/{user}/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\StatusController::api_my
     requirements:
         page: \d+
-
 api_status_by_random:
-    path: /api/status/by/random/{language}/{token}/{purchase}/
-    controller: App\AppBundle\Controller\StatusController::apiByRandom
-
+    path:     /api/status/by/random/{language}/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\StatusController::api_by_random
+    requirements:
 app_status_review:
     path: /status/reviewV/{id}.html
-    controller: App\AppBundle\Controller\StatusController::review
+    controller:  App\AppBundle\Controller\StatusController::review
     requirements:
-        id: \d+
+        id:  \d+
 
 app_status_review_quote:
     path: /status/reviewQ{id}.html
-    controller: App\AppBundle\Controller\StatusController::reviewQuote
+    controller:  App\AppBundle\Controller\StatusController::reviewQuote
     requirements:
-        id: \d+
-
+        id:  \d+
 api_status_add_share:
-    path: /api/status/add/share/{token}/{purchase}/
-    controller: App\AppBundle\Controller\StatusController::apiAddShare
-
+    path:     /api/status/add/share/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\StatusController::api_add_share
 api_status_add_view:
-    path: /api/status/add/view/{token}/{purchase}/
-    controller: App\AppBundle\Controller\StatusController::apiAddView
-
+    path:     /api/status/add/view/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\StatusController::api_add_view
 api_status_by_user:
-    path: /api/status/by/user/{page}/{order}/{language}/{user}/{token}/{purchase}/
-    controller: App\AppBundle\Controller\StatusController::apiByUser
+    path:     /api/status/by/user/{page}/{order}/{language}/{user}/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\StatusController::api_by_user
     requirements:
         user: \d+
         page: \d+
-
 api_quote_upload:
-    path: /api/quote/upload/{token}/{purchase}/
-    controller: App\AppBundle\Controller\StatusController::apiUploadQuote
-
+    path:     /api/quote/upload/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\StatusController::api_uploadQuote
 api_video_upload:
-    path: /api/video/upload/{token}/{purchase}/
-    controller: App\AppBundle\Controller\StatusController::apiUpload
-
+    path:     /api/video/upload/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\StatusController::api_upload
 api_image_upload:
-    path: /api/image/upload/{token}/{purchase}/
-    controller: App\AppBundle\Controller\StatusController::apiUploadImage
-
+    path:     /api/image/upload/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\StatusController::api_uploadImage
 api_gif_upload:
-    path: /api/gif/upload/{token}/{purchase}/
-    controller: App\AppBundle\Controller\StatusController::apiUploadGif
-
+    path:     /api/gif/upload/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\StatusController::api_uploadGif
 api_status_by_me:
-    path: /api/status/by/me/{page}/{user}/{token}/{purchase}/
-    controller: App\AppBundle\Controller\StatusController::apiByMe
+    path:     /api/status/by/me/{page}/{user}/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\StatusController::api_by_me
     requirements:
         user: \d+
 
 api_status_by_follow:
-    path: /api/status/by/follow/{page}/{language}/{user}/{token}/{purchase}/
-    controller: App\AppBundle\Controller\StatusController::apiByFollow
+    path:     /api/status/by/follow/{page}/{language}/{user}/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\StatusController::api_by_follow
     requirements:
         page: \d+
         user: \d+
-
 api_status_by_category:
-    path: /api/status/by/category/{page}/{order}/{language}/{category}/{token}/{purchase}/
-    controller: App\AppBundle\Controller\StatusController::apiByCategory
+    path:     /api/status/by/category/{page}/{order}/{language}/{category}/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\StatusController::api_by_category
     requirements:
         category: \d+
         page: \d+
-
 api_status_by_query:
-    path: /api/status/by/query/{order}/{language}/{page}/{query}/{token}/{purchase}/
-    controller: App\AppBundle\Controller\StatusController::apiByQuery
+    path:     /api/status/by/query/{order}/{language}/{page}/{query}/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\StatusController::api_by_query
+
+#not yet
 
 
 
 
 
 
+#reactions 
 
-# Reactions API Routes
 api_video_add_like:
-    path: /api/video/add/like/{token}/{purchase}/
-    controller: App\AppBundle\Controller\StatusController::apiAddLike
-
+    path:     /api/video/add/like/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\StatusController::api_add_like
+    
 api_video_add_love:
-    path: /api/video/add/love/{token}/{purchase}/
-    controller: App\AppBundle\Controller\StatusController::apiAddLove
+    path:     /api/video/add/love/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\StatusController::api_add_love
 
 api_video_add_angry:
-    path: /api/video/add/angry/{token}/{purchase}/
-    controller: App\AppBundle\Controller\StatusController::apiAddAngry
+    path:     /api/video/add/angry/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\StatusController::api_add_angry
 
 api_video_add_sad:
-    path: /api/video/add/sad/{token}/{purchase}/
-    controller: App\AppBundle\Controller\StatusController::apiAddSad
+    path:     /api/video/add/sad/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\StatusController::api_add_sad
 
 api_video_add_haha:
-    path: /api/video/add/haha/{token}/{purchase}/
-    controller: App\AppBundle\Controller\StatusController::apiAddHaha
+    path:     /api/video/add/haha/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\StatusController::api_add_haha
 
 api_video_add_woow:
-    path: /api/video/add/woow/{token}/{purchase}/
-    controller: App\AppBundle\Controller\StatusController::apiAddWoow
-
+    path:     /api/video/add/woow/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\StatusController::api_add_woow
 
 
 
 api_video_delete_like:
-    path: /api/video/delete/like/{token}/{purchase}/
-    controller: App\AppBundle\Controller\StatusController::apiDeleteLike
-
+    path:     /api/video/delete/like/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\StatusController::api_delete_like
+    
 api_video_delete_love:
-    path: /api/video/delete/love/{token}/{purchase}/
-    controller: App\AppBundle\Controller\StatusController::apiDeleteLove
+    path:     /api/video/delete/love/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\StatusController::api_delete_love
 
 api_video_delete_angry:
-    path: /api/video/delete/angry/{token}/{purchase}/
-    controller: App\AppBundle\Controller\StatusController::apiDeleteAngry
+    path:     /api/video/delete/angry/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\StatusController::api_delete_angry
 
 api_video_delete_sad:
-    path: /api/video/delete/sad/{token}/{purchase}/
-    controller: App\AppBundle\Controller\StatusController::apiDeleteSad
+    path:     /api/video/delete/sad/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\StatusController::api_delete_sad
 
 api_video_delete_haha:
-    path: /api/video/delete/haha/{token}/{purchase}/
-    controller: App\AppBundle\Controller\StatusController::apiDeleteHaha
+    path:     /api/video/delete/haha/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\StatusController::api_delete_haha
 
 api_video_delete_woow:
-    path: /api/video/delete/woow/{token}/{purchase}/
-    controller: App\AppBundle\Controller\StatusController::apiDeleteWoow
+    path:     /api/video/delete/woow/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\StatusController::api_delete_woow
 
 
 
 
 
 
+#language 
 app_language_add:
     path: /language/add.html
-    controller: App\AppBundle\Controller\LanguageController::add
-
+    controller:  App\AppBundle\Controller\LanguageController::add
 app_language_index:
     path: /language/index.html
-    controller: App\AppBundle\Controller\LanguageController::index
-
+    controller:  App\AppBundle\Controller\LanguageController::index
 app_language_edit:
     path: /language/edit/{id}.html
-    controller: App\AppBundle\Controller\LanguageController::edit
+    controller:  App\AppBundle\Controller\LanguageController::edit
     requirements:
-        id: \d+
-
+        id:  \d+
 app_language_delete:
     path: /language/delete/{id}.html
-    controller: App\AppBundle\Controller\LanguageController::delete
+    controller:  App\AppBundle\Controller\LanguageController::delete
     requirements:
-        id: \d+
-
+        id:  \d+
 app_language_up:
     path: /language/up/{id}.html
-    controller: App\AppBundle\Controller\LanguageController::up
+    controller:  App\AppBundle\Controller\LanguageController::up
     requirements:
-        id: \d+
-
+        id:  \d+
 app_language_down:
     path: /language/down/{id}.html
-    controller: App\AppBundle\Controller\LanguageController::down
+    controller:  App\AppBundle\Controller\LanguageController::down
     requirements:
-        id: \d+
-
+        id:  \d+
 api_language_all:
-    path: /api/language/all/{token}/{purchase}/
-    controller: App\AppBundle\Controller\LanguageController::apiAll
-
-
-
+    path:     /api/language/all/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\LanguageController::api_all
+#comment
 app_comment_delete:
-    path: /comment/delete/{id}.html
-    controller: App\AppBundle\Controller\CommentController::delete
+    path:     /comment/delete/{id}.html
+    controller:  App\AppBundle\Controller\CommentController::delete
     requirements:
-        id: \d+
-
+        id:  \d+
 app_comment_hide:
-    path: /comment/hide/{id}.html
-    controller: App\AppBundle\Controller\CommentController::hide
+    path:     /comment/hide/{id}.html
+    controller:  App\AppBundle\Controller\CommentController::hide
     requirements:
-        id: \d+
-
+        id:  \d+  
 app_comment_index:
-    path: /comment/index.html
-    controller: App\AppBundle\Controller\CommentController::index
-
+    path:     /comment/index.html
+    controller:  App\AppBundle\Controller\CommentController::index
 api_comment_add:
-    path: /api/comment/add/{token}/{purchase}/
-    controller: App\AppBundle\Controller\CommentController::apiAdd
+    path:     /api/comment/add/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\CommentController::api_add
     methods: POST
-
 api_comment_list:
-    path: /api/comment/list/{id}/{token}/{purchase}/
-    controller: App\AppBundle\Controller\CommentController::apiList
+    path:     /api/comment/list/{id}/{token}/{purchase}/
+    controller:  App\AppBundle\Controller\CommentController::api_list
     requirements:
-        id: \d+
+        id:  \d+  

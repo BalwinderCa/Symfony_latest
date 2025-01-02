@@ -24,6 +24,10 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Knp\Component\Pager\PaginatorInterface; // Correct import
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Asset\Packages as AssetHelper;
+
+
 use Doctrine\ORM\EntityManagerInterface;
 
 class StatusController extends AbstractController 
@@ -33,13 +37,15 @@ class StatusController extends AbstractController
     private CacheManager $imagineCacheManager;
 	private  $params;
 	private $token;
+	private $assetHelper;
 
     // Inject the EntityManagerInterface into the controller
-    public function __construct(EntityManagerInterface $entityManager,CacheManager $imagineCacheManager,ParameterBagInterface $params)
+    public function __construct(EntityManagerInterface $entityManager,AssetHelper $assetHelper,CacheManager $imagineCacheManager,ParameterBagInterface $params)
     {
         $this->entityManager = $entityManager;
         $this->imagineCacheManager = $imagineCacheManager;
 		$this->params = $params;
+		$this->assetHelper = $assetHelper;
 		$this->token = "4F5A9C3D9A86FA54EACEDDD635185";
     }
 
@@ -661,15 +667,84 @@ public function addVideoUrl(Request $request) {
 		return new Response($jsonContent);
 	}
 
-	public function api_all(Request $request, $page, $order, $language, $token) {
+	// Helper function to calculate time difference
+	private function getTimeDifference($createdDateTime)
+	{
+		$currentDateTime = new \DateTime();
+		$interval = $currentDateTime->diff($createdDateTime);
+		return $interval->format('%y years, %m months, %d days, %h hours, %i minutes ago');
+	}
+
+	// Helper function to prepare response data for a status
+	private function prepareStatusResponseData(Status $status, Request $request)
+	{
+		$a = [];
+
+		// Basic fields
+		$a["id"] = $status->getId();
+		$a["kind"] = $status->getType();
+		$a["title"] = $status->getTitle();
+		$a["description"] = $status->getDescription();
+		$a["review"] = $status->getReview();
+		$a["comment"] = $status->getComment();
+		$a["comments"] = sizeof($status->getComments());
+		$a["downloads"] = $status->getDownloads();
+		$a["font"] = $status->getFont();
+		$a["views"] = $status->getViews();
+		$a["user"] = $status->getUser()->getName();
+		$a["userid"] = $status->getUser()->getId();
+		$a["userimage"] = $status->getUser()->getImage();
+
+		// Handling video/media data
+		if ($status->getType() != "quote") {
+			if ($status->getVideo()) {
+				$a["type"] = $status->getVideo()->getType();
+				$a["extension"] = $status->getVideo()->getExtension();
+			} else {
+				$a["type"] = $status->getMedia()->getType();
+				$a["extension"] = $status->getMedia()->getExtension();
+			}
+
+			$a["thumbnail"] = $this->imagineCacheManager->getBrowserPath($this->assetHelper->getUrl($status->getMedia()->getLink()), 'status_thumb_api');
+
+			if ($status->getVideo()) {
+				$a["original"] = $status->getVideo()->getEnabled() ?
+					$request->getSchemeAndHttpHost() . "/" . $status->getVideo()->getLink() :
+					$status->getVideo()->getLink();
+			} else {
+				$a["original"] = $request->getSchemeAndHttpHost() . "/" . $status->getMedia()->getLink();
+			}
+		} else {
+			$a["color"] = $status->getColor();
+		}
+
+		// Add additional data for the time difference
+		$a["created"] = $this->getTimeDifference($status->getCreated());
+
+		// Additional reactions and tags
+		$a["tags"] = $status->getTags();
+		$a["like"] = $status->getLike();
+		$a["love"] = $status->getLove();
+		$a["woow"] = $status->getWoow();
+		$a["angry"] = $status->getAngry();
+		$a["sad"] = $status->getSad();
+		$a["haha"] = $status->getHaha();
+
+		return $a;
+	}
+
+
+	public function api_all(Request $request, $page, $order, $language, $token)
+	{
 		if ($token != $this->token) {
 			throw new NotFoundHttpException("Page not found");
 		}
+
 		$nombre = 30;
 		$em = $this->entityManager;
-		$imagineCacheManager = $this->get('liip_imagine.cache.manager');
 		$repository = $em->getRepository(Status::class);
 
+		// Build query based on language filter
 		if ($language == 0) {
 			$query = $repository->createQueryBuilder('w')
 				->where("w.enabled = true")
@@ -688,78 +763,19 @@ public function addVideoUrl(Request $request) {
 				->setMaxResults($nombre)
 				->getQuery();
 		}
+
 		$videos = $query->getResult();
-		return $this->render('@AppBundle/Status/api_all.html.php', array("videos" => $videos));
+
+		// Prepare the response data using the helper function
+		$list = [];
+		foreach ($videos as $status) {
+			$list[] = $this->prepareStatusResponseData($status, $request);
+		}
+
+		// Return JSON response
+		return new JsonResponse($list, JSON_UNESCAPED_UNICODE);
 	}
 
-	public function api_by_category(Request $request, $page, $order, $language, $category, $token) {
-		if ($token != $this->token) {
-			throw new NotFoundHttpException("Page not found");
-		}
-		$nombre = 30;
-		$em = $this->entityManager;
-		$imagineCacheManager = $this->get('liip_imagine.cache.manager');
-		$repository = $em->getRepository(Status::class);
-		if ($language == 0) {
-			$query = $repository->createQueryBuilder('w')
-				->leftJoin('w.categories', 'c')
-				->where('c.id = :category', "w.enabled = true")
-				->setParameter('category', $category)
-				->addOrderBy('w.' . $order, 'DESC')
-				->addOrderBy('w.id', 'asc')
-				->setFirstResult($nombre * $page)
-				->setMaxResults($nombre)
-				->getQuery();
-		} else {
-			$query = $repository->createQueryBuilder('w')
-				->leftJoin('w.languages', 'l')
-				->leftJoin('w.categories', 'c')
-				->where('l.id in (' . $language . ')', "w.enabled = true", 'c.id = :category')
-
-				->setParameter('category', $category)
-				->addOrderBy('w.' . $order, 'DESC')
-				->addOrderBy('w.id', 'asc')
-				->setFirstResult($nombre * $page)
-				->setMaxResults($nombre)
-				->getQuery();
-		}
-		$videos = $query->getResult();
-		return $this->render('@AppBundle/Status/api_all.html.php', array("videos" => $videos));
-	}
-
-	public function api_by_follow(Request $request, $page, $language, $user, $token) {
-		if ($token != $this->token) {
-			throw new NotFoundHttpException("Page not found");
-		}
-		$nombre = 30;
-		$em = $this->entityManager;
-		$imagineCacheManager = $this->get('liip_imagine.cache.manager');
-		$repository = $em->getRepository(Status::class);
-		if ($language == 0) {
-			$query = $repository->createQueryBuilder('w')
-				->leftJoin('w.user', 'u')
-				->leftJoin('u.followers', 'f')
-				->where('f.id = ' . $user, "w.enabled = true")
-				->addOrderBy('w.created', 'DESC')
-				->addOrderBy('w.id', 'asc')
-				->setFirstResult($nombre * $page)
-				->setMaxResults($nombre)
-				->getQuery();
-		} else {
-			$query = $repository->createQueryBuilder('w')
-				->leftJoin('w.languages', 'l')
-				->leftJoin('w.user', 'u')
-				->leftJoin('u.followers', 'f')
-				->where('l.id in (' . $language . ')', 'f.id =' . $user, "w.enabled = true")
-				->addOrderBy('w.created', 'DESC')
-				->addOrderBy('w.id', 'asc')
-				->setFirstResult($nombre * $page)
-				->setMaxResults($nombre)
-				->getQuery();
-		}
-		$videos = $query->getResult();
-		return $this->render('@AppBundle/Status/api_all.html.php', array("videos" => $videos));
-	}
 
 	public function api_by_me(Request $request, $page, $user, $token) {
 		if ($token != $this->token) {
@@ -767,7 +783,7 @@ public function addVideoUrl(Request $request) {
 		}
 		$nombre = 30;
 		$em = $this->entityManager;
-		$imagineCacheManager = $this->get('liip_imagine.cache.manager');
+		//$imagineCacheManager = $this->get('liip_imagine.cache.manager');
 		$repository = $em->getRepository(Status::class);
 		$query = $repository->createQueryBuilder('w')
 			->where('w.user = :user')
@@ -778,7 +794,16 @@ public function addVideoUrl(Request $request) {
 			->setMaxResults($nombre)
 			->getQuery();
 		$videos = $query->getResult();
-		return $this->render('@AppBundle/Status/api_all.html.php', array("videos" => $videos));
+
+		// Prepare the response data using the helper function
+		$list = [];
+		foreach ($videos as $status) {
+			$list[] = $this->prepareStatusResponseData($status, $request);
+		}
+
+		// Return JSON response
+		return new JsonResponse($list, JSON_UNESCAPED_UNICODE);
+		//return $this->render('@AppBundle/Status/api_all.html.php', array("videos" => $videos));
 	}
 
 	public function api_by_query(Request $request, $order, $language, $page, $query, $token) {
@@ -787,7 +812,7 @@ public function addVideoUrl(Request $request) {
 		}
 		$nombre = 30;
 		$em = $this->entityManager;
-		$imagineCacheManager = $this->get('liip_imagine.cache.manager');
+		//$imagineCacheManager = $this->get('liip_imagine.cache.manager');
 		$repository = $em->getRepository(Status::class);
 		if ($language == 0) {
 			$query_dql = $repository->createQueryBuilder('w')
@@ -810,7 +835,16 @@ public function addVideoUrl(Request $request) {
 		}
 		$videos = $query_dql->getResult();
 
-		return $this->render('@AppBundle/Status/api_all.html.php', array("videos" => $videos));
+		// Prepare the response data using the helper function
+		$list = [];
+		foreach ($videos as $status) {
+			$list[] = $this->prepareStatusResponseData($status, $request);
+		}
+
+		// Return JSON response
+		return new JsonResponse($list, JSON_UNESCAPED_UNICODE);
+
+		//return $this->render('@AppBundle/Status/api_all.html.php', array("videos" => $videos));
 	}
 
 	public function api_by_random(Request $request, $language, $token) {
@@ -820,7 +854,7 @@ public function addVideoUrl(Request $request) {
 
 		$nombre = 6;
 		$em = $this->entityManager;
-		$imagineCacheManager = $this->get('liip_imagine.cache.manager');
+		//$imagineCacheManager = $this->get('liip_imagine.cache.manager');
 		$repository = $em->getRepository(Status::class);
 
 		if ($language == 0) {
@@ -853,7 +887,16 @@ public function addVideoUrl(Request $request) {
 		}
 
 		$videos = $query->getResult();
-		return $this->render('@AppBundle/Status/api_all.html.php', array("videos" => $videos));
+
+		// Prepare the response data using the helper function
+		$list = [];
+		foreach ($videos as $status) {
+			$list[] = $this->prepareStatusResponseData($status, $request);
+		}
+
+		// Return JSON response
+		return new JsonResponse($list, JSON_UNESCAPED_UNICODE);
+		//return $this->render('@AppBundle/Status/api_all.html.php', array("videos" => $videos));
 	}
 
 	public function api_by_user(Request $request, $page, $order, $language, $user, $token) {
@@ -862,7 +905,7 @@ public function addVideoUrl(Request $request) {
 		}
 		$nombre = 30;
 		$em = $this->entityManager;
-		$imagineCacheManager = $this->get('liip_imagine.cache.manager');
+		//$imagineCacheManager = $this->get('liip_imagine.cache.manager');
 		$repository = $em->getRepository(Status::class);
 		if ($language == 0) {
 			$query = $repository->createQueryBuilder('w')
@@ -886,7 +929,15 @@ public function addVideoUrl(Request $request) {
 				->getQuery();
 		}
 		$videos = $query->getResult();
-		return $this->render('@AppBundle/Status/api_all.html.php', array("videos" => $videos));
+		// Prepare the response data using the helper function
+		$list = [];
+		foreach ($videos as $status) {
+			$list[] = $this->prepareStatusResponseData($status, $request);
+		}
+
+		// Return JSON response
+		return new JsonResponse($list, JSON_UNESCAPED_UNICODE);
+		//return $this->render('@AppBundle/Status/api_all.html.php', array("videos" => $videos));
 	}
 
 	public function api_delete_angry(Request $request, $token) {
@@ -1009,7 +1060,7 @@ public function addVideoUrl(Request $request) {
 		}
 		$nombre = 30;
 		$em = $this->entityManager;
-		$imagineCacheManager = $this->get('liip_imagine.cache.manager');
+		//$imagineCacheManager = $this->get('liip_imagine.cache.manager');
 		$repository = $em->getRepository(Status::class);
 		$query = $repository->createQueryBuilder('w')
 			->leftJoin('w.user', 'c')
@@ -1022,7 +1073,15 @@ public function addVideoUrl(Request $request) {
 			->getQuery();
 
 		$videos = $query->getResult();
-		return $this->render('@AppBundle/Status/api_all.html.php', array("videos" => $videos));
+		// Prepare the response data using the helper function
+		$list = [];
+		foreach ($videos as $status) {
+			$list[] = $this->prepareStatusResponseData($status, $request);
+		}
+
+		// Return JSON response
+		return new JsonResponse($list, JSON_UNESCAPED_UNICODE);
+		//return $this->render('@AppBundle/Status/api_all.html.php', array("videos" => $videos));
 	}
 
     public function api_uploadQuote(Request $request, $token) {
@@ -1141,7 +1200,7 @@ public function addVideoUrl(Request $request) {
 
 			// Generate thumbnail and original media URLs
 			if ($media) {
-				$thumbnail = $imagineCacheManager->getBrowserPath($media->getLink(), 'status_thumb_api');
+				$thumbnail = $this->imagineCacheManager->getBrowserPath($media->getLink(), 'status_thumb_api');
 				$original = $this->generateAbsoluteUrl($media->getLink());
 			}
 

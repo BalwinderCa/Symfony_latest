@@ -112,8 +112,8 @@ class Status
     private int $woow;
 
     #[ORM\ManyToOne(targetEntity: Media::class)]
-    #[ORM\JoinColumn(name: 'video_id', referencedColumnName: 'id')]
-    private Media $video;
+    #[ORM\JoinColumn(name: 'video_id', referencedColumnName: 'id', nullable: true)] // Set nullable to true
+    private ?Media $video = null;
 
     public function __construct()
     {
@@ -130,6 +130,17 @@ class Status
         $this->comments = new ArrayCollection();
         $this->created = new \DateTime();
         $this->review = false;
+    }
+
+    public function getFont()
+    {
+        return $this->font;
+    }
+
+    public function setFont($font)
+    {
+        $this->font = $font;
+        return $this;
     }
 
     public function getId(): ?int
@@ -428,7 +439,7 @@ class Status
         return $this;
     }
 
-    public function getVideo(): Media
+    public function getVideo(): ?Media
     {
         return $this->video;
     }

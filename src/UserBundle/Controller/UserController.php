@@ -20,6 +20,8 @@ use App\AppBundle\Entity\Transaction;
 use Symfony\Component\Routing\Annotation\Route; // Import Route annotation
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Knp\Component\Pager\PaginatorInterface; // Correct import
+use App\AppBundle\Entity\Status;
+use Symfony\Component\Asset\Packages as AssetHelper;
 
 class UserController extends AbstractController
 {
@@ -32,16 +34,19 @@ class UserController extends AbstractController
     private $paginator;
     private $params;
     private $token;
+    private $assetHelper;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         CacheManager $imagineCacheManager,
-        PaginatorInterface $paginator
+        PaginatorInterface $paginator,
+        AssetHelper $assetHelper
     ) {
         $this->entityManager = $entityManager;
         $this->imagineCacheManager = $imagineCacheManager;
         $this->paginator = $paginator;
         $this->token = "4F5A9C3D9A86FA54EACEDDD635185";
+        $this->assetHelper = $assetHelper;
     }
 
     private function getAccessToken(): string
@@ -1457,6 +1462,14 @@ class UserController extends AbstractController
         ]);
     }
 
+    // Helper function to calculate time difference
+	private function getTimeDifference($createdDateTime)
+	{
+		$currentDateTime = new \DateTime();
+		$interval = $currentDateTime->diff($createdDateTime);
+		return $interval->format('%y years, %m months, %d days, %h hours, %i minutes ago');
+	}
+
     public function api_followingstop(Request $request, $user, $token)
     {
         if ($token != $this->token) {
@@ -1478,7 +1491,7 @@ class UserController extends AbstractController
                 $b["trusted"] = $e->getTrusted();
                 $b["image"] = $e->getImage();
                 $last_wallpaper = $em
-                    ->getRepository("AppBundle:Status")
+                    ->getRepository(Status::class)
                     ->findOneBy(
                         ["enabled" => true, "user" => $e],
                         ["created" => "desc"]
@@ -1489,8 +1502,34 @@ class UserController extends AbstractController
                 }
             }
         }
-        return $this->render("@UserBundle/User/api_export.html.php", [
-            "users" => $users,
-        ]);
+
+        $followings=array();
+        for ($i=0; $i < sizeof($users); $i++) { 
+            for ($j=$i+1; $j < sizeof($users); $j++) { 
+                if ($users[$i]["status"]->getCreated()<$users[$j]["status"]->getCreated()) {
+                    $temp = $users[$i];
+                    $users[$i] = $users[$j];
+                    $users[$j] =$temp ;
+                }
+            }
+        }
+        $max = 10;
+        for ($i=0; $i < sizeof($users); $i++) { 
+            $a["id"]=$users[$i]["id"];
+            $a["name"]=$users[$i]["name"];
+            $a["image"]=$users[$i]["image"];
+            $a["trusted"]=$users[$i]["trusted"];
+            $a["label"]=$this->getTimeDifference($users[$i]["status"]->getCreated());
+            $a["thum"] =$users[$i]["image"];
+            if ($users[$i]["status"]->getMedia()) 
+                $a["thum"]= $this->imagineCacheManager->getBrowserPath($this->assetHelper->getUrl($users[$i]["status"]->getMedia()->getLink()), 'status_thumb_api');
+                
+            
+            $followings[]=$a;
+            if ($i==9) {
+                break;
+            }
+        }
+        return new JsonResponse($followings, JSON_UNESCAPED_UNICODE);
     }
 }

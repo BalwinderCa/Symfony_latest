@@ -15,19 +15,26 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
+use Symfony\Component\Asset\Packages as AssetHelper;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class SlideController extends AbstractController 
 {
 
     private $entityManager;
     private  $params;
+    private CacheManager $imagineCacheManager;
+    private $assetHelper;
 
 
     // Inject the EntityManagerInterface into the controller
-    public function __construct(EntityManagerInterface $entityManager,ParameterBagInterface $params)
+    public function __construct(AssetHelper $assetHelper,CacheManager $imagineCacheManager,EntityManagerInterface $entityManager,ParameterBagInterface $params)
      {
          $this->entityManager = $entityManager;
          $this->params = $params;
+         $this->imagineCacheManager = $imagineCacheManager;
+         $this->assetHelper = $assetHelper;
      }
 
     
@@ -39,10 +46,89 @@ class SlideController extends AbstractController
     }
 
     #[Route('/api/slides', name: 'app_slide_api_all')]
-    public function api_all() {
+    public function api_all(Request $request) {
         $em = $this->entityManager;
         $slides = $em->getRepository(Slide::class)->findBy([], ['position' => 'asc']);
-        return $this->render('@AppBundle/Slide/api_all.html.php', ['slides' => $slides]);
+
+        $list = array();
+        foreach ($slides as $key => $slide) {
+            $s = null;
+            $s["id"] = $slide->getId();
+            $s["title"] = $slide->getTitle();
+            $s["type"] = $slide->getType();
+            $s["image"] = $this->imagineCacheManager->getBrowserPath($this->assetHelper->getUrl($slide->getMedia()->getLink()), 'slide_thumb');
+            if ($slide->getType() == 3 && $slide->getStatus() != null) {
+                $status = $slide->getStatus();
+                $a = array();
+
+                $a["id"]=$status->getId();
+                $a["kind"]=$status->getType();
+                $a["title"]=$status->getTitle();
+                $a["description"]=$status->getDescription();
+                $a["review"]=$status->getReview();
+                $a["comment"]=$status->getComment();
+                $a["comments"]=sizeof($status->getComments());
+                $a["downloads"]=$status->getDownloads();
+                $a["views"]=$status->getViews();
+                $a["font"]=$status->getFont();
+                $a["user"]=$status->getUser()->getName();
+                $a["userid"]=$status->getUser()->getId();
+                $a["userimage"]=$status->getUser()->getImage();
+                if ($status->getType()!="quote") {
+                    if ($status->getVideo()) {
+                        $a["type"]=$status->getVideo()->getType();
+                        $a["extension"]=$status->getVideo()->getExtension();
+                    }else{
+                        $a["type"]=$status->getMedia()->getType();
+                        $a["extension"]=$status->getMedia()->getExtension();
+                    }
+                    $a["thumbnail"]= $this->imagineCacheManager->getBrowserPath($this->assetHelper->getUrl($slide->getMedia()->getLink()), 'status_thumb_api');
+                    if ($status->getVideo()) {
+                        if ($status->getVideo()->getEnabled()) {
+                            $a["original"] = $request->getSchemeAndHttpHost() . "/" .$status->getVideo()->getLink();
+                        }else{
+                            $a["original"] = $status->getVideo()->getLink();
+                        }   
+                    }else{
+                        $a["original"]=$request->getSchemeAndHttpHost() . "/" . $status->getMedia()->getLink();
+                    }
+                }else{
+                    $a["color"]=$status->getColor();
+                }
+                // Add additional data
+			// Get the current date and time
+			$currentDateTime = new \DateTime();
+
+			// Get the 'created' date of the status object
+			$createdDateTime = $status->getCreated();
+
+			// Calculate the time difference
+			$interval = $currentDateTime->diff($createdDateTime);
+
+			// Store the interval or format it as needed
+			$a["created"] = $interval->format('%y years, %m months, %d days, %h hours, %i minutes ago');
+                $a["tags"]=$status->getTags();
+                $a["like"]=$status->getLike();
+                $a["love"]=$status->getLove();
+                $a["woow"]=$status->getWoow();
+                $a["angry"]=$status->getAngry();
+                $a["sad"]=$status->getSad();
+                $a["haha"]=$status->getHaha();
+                $s["status"] = $a;
+            } elseif ($slide->getType() == 1 && $slide->getCategory() != null) {
+                $c["id"] = $slide->getCategory()->getId();
+                $c["title"] = $slide->getCategory()->getTitle();
+                $c["image"] = $this->imagineCacheManager->getBrowserPath($this->assetHelper->getUrl($slide->getMedia()->getLink()), 'category_thumb_api');
+                $s["category"] = $c;
+            } elseif ($slide->getType() == 2 && $slide->getUrl() != null) {
+                $s["url"] = $slide->getUrl();
+            }
+            $list[] = $s;
+        }
+
+        return new JsonResponse($list, JSON_UNESCAPED_UNICODE);
+        
+        //return $this->render('@AppBundle/Slide/api_all.html.php', ['slides' => $slides]);
     }
 
     #[Route('/slides/up/{id}', name: 'app_slide_up')]
