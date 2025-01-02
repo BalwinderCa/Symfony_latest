@@ -50,7 +50,7 @@ security:
     access_control:
         # Public routes
         - { path: ^/login$, roles: PUBLIC_ACCESS }
-        - { path: ^/api/device/, roles: PUBLIC_ACCESS }
+        - { path: ^/api/, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: ROLE_USER }
 
 
