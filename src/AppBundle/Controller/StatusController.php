@@ -32,6 +32,7 @@ class StatusController extends AbstractController
 	private $entityManager;
     private CacheManager $imagineCacheManager;
 	private  $params;
+	private $token;
 
     // Inject the EntityManagerInterface into the controller
     public function __construct(EntityManagerInterface $entityManager,CacheManager $imagineCacheManager,ParameterBagInterface $params)
@@ -39,6 +40,7 @@ class StatusController extends AbstractController
         $this->entityManager = $entityManager;
         $this->imagineCacheManager = $imagineCacheManager;
 		$this->params = $params;
+		$this->token = "4F5A9C3D9A86FA54EACEDDD635185";
     }
 
     function remove_emoji ($string="") 
@@ -467,7 +469,7 @@ public function addVideoUrl(Request $request) {
 
 	
 	public function api_add_angry(Request $request, $token) {
-		if ($token != $this->container->getParameter('token_app')) {
+		if ($token != $this->token) {
 			throw new NotFoundHttpException("Page not found");
 		}
 		$id = $request->get("id");
@@ -486,7 +488,7 @@ public function addVideoUrl(Request $request) {
 	}
 
 	public function api_add_share(Request $request, $token) {
-        if ($token != $this->container->getParameter('token_app')) {
+        if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
         $em = $this->entityManager;
@@ -525,7 +527,7 @@ public function addVideoUrl(Request $request) {
         return new Response($jsonContent);
 	}
     public function api_add_view(Request $request, $token) {
-        if ($token != $this->container->getParameter('token_app')) {
+        if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
         $em = $this->entityManager;
@@ -565,7 +567,7 @@ public function addVideoUrl(Request $request) {
     }
 
 	public function api_add_haha(Request $request, $token) {
-		if ($token != $this->container->getParameter('token_app')) {
+		if ($token != $this->token) {
 			throw new NotFoundHttpException("Page not found");
 		}
 		$id = $request->get("id");
@@ -584,7 +586,7 @@ public function addVideoUrl(Request $request) {
 	}
 
 	public function api_add_like(Request $request, $token) {
-		if ($token != $this->container->getParameter('token_app')) {
+		if ($token != $this->token) {
 			throw new NotFoundHttpException("Page not found");
 		}
 		$id = $request->get("id");
@@ -603,7 +605,7 @@ public function addVideoUrl(Request $request) {
 	}
 
 	public function api_add_love(Request $request, $token) {
-		if ($token != $this->container->getParameter('token_app')) {
+		if ($token != $this->token) {
 			throw new NotFoundHttpException("Page not found");
 		}
 		$id = $request->get("id");
@@ -622,7 +624,7 @@ public function addVideoUrl(Request $request) {
 	}
 
 	public function api_add_sad(Request $request, $token) {
-		if ($token != $this->container->getParameter('token_app')) {
+		if ($token != $this->token) {
 			throw new NotFoundHttpException("Page not found");
 		}
 		$id = $request->get("id");
@@ -641,7 +643,7 @@ public function addVideoUrl(Request $request) {
 	}
 
 	public function api_add_woow(Request $request, $token) {
-		if ($token != $this->container->getParameter('token_app')) {
+		if ($token != $this->token) {
 			throw new NotFoundHttpException("Page not found");
 		}
 		$id = $request->get("id");
@@ -660,7 +662,7 @@ public function addVideoUrl(Request $request) {
 	}
 
 	public function api_all(Request $request, $page, $order, $language, $token) {
-		if ($token != $this->container->getParameter('token_app')) {
+		if ($token != $this->token) {
 			throw new NotFoundHttpException("Page not found");
 		}
 		$nombre = 30;
@@ -691,7 +693,7 @@ public function addVideoUrl(Request $request) {
 	}
 
 	public function api_by_category(Request $request, $page, $order, $language, $category, $token) {
-		if ($token != $this->container->getParameter('token_app')) {
+		if ($token != $this->token) {
 			throw new NotFoundHttpException("Page not found");
 		}
 		$nombre = 30;
@@ -726,7 +728,7 @@ public function addVideoUrl(Request $request) {
 	}
 
 	public function api_by_follow(Request $request, $page, $language, $user, $token) {
-		if ($token != $this->container->getParameter('token_app')) {
+		if ($token != $this->token) {
 			throw new NotFoundHttpException("Page not found");
 		}
 		$nombre = 30;
@@ -760,7 +762,7 @@ public function addVideoUrl(Request $request) {
 	}
 
 	public function api_by_me(Request $request, $page, $user, $token) {
-		if ($token != $this->container->getParameter('token_app')) {
+		if ($token != $this->token) {
 			throw new NotFoundHttpException("Page not found");
 		}
 		$nombre = 30;
@@ -780,7 +782,7 @@ public function addVideoUrl(Request $request) {
 	}
 
 	public function api_by_query(Request $request, $order, $language, $page, $query, $token) {
-		if ($token != $this->container->getParameter('token_app')) {
+		if ($token != $this->token) {
 			throw new NotFoundHttpException("Page not found");
 		}
 		$nombre = 30;
@@ -812,7 +814,7 @@ public function addVideoUrl(Request $request) {
 	}
 
 	public function api_by_random(Request $request, $language, $token) {
-		if ($token != $this->container->getParameter('token_app')) {
+		if ($token != $this->token) {
 			throw new NotFoundHttpException("Page not found");
 		}
 
@@ -855,7 +857,7 @@ public function addVideoUrl(Request $request) {
 	}
 
 	public function api_by_user(Request $request, $page, $order, $language, $user, $token) {
-		if ($token != $this->container->getParameter('token_app')) {
+		if ($token != $this->token) {
 			throw new NotFoundHttpException("Page not found");
 		}
 		$nombre = 30;
@@ -888,7 +890,7 @@ public function addVideoUrl(Request $request) {
 	}
 
 	public function api_delete_angry(Request $request, $token) {
-		if ($token != $this->container->getParameter('token_app')) {
+		if ($token != $this->token) {
 			throw new NotFoundHttpException("Page not found");
 		}
 		$id = $request->get("id");
@@ -907,7 +909,7 @@ public function addVideoUrl(Request $request) {
 	}
 
 	public function api_delete_haha(Request $request, $token) {
-		if ($token != $this->container->getParameter('token_app')) {
+		if ($token != $this->token) {
 			throw new NotFoundHttpException("Page not found");
 		}
 		$id = $request->get("id");
@@ -926,7 +928,7 @@ public function addVideoUrl(Request $request) {
 	}
 
 	public function api_delete_like(Request $request, $token) {
-		if ($token != $this->container->getParameter('token_app')) {
+		if ($token != $this->token) {
 			throw new NotFoundHttpException("Page not found");
 		}
 		$id = $request->get("id");
@@ -945,7 +947,7 @@ public function addVideoUrl(Request $request) {
 	}
 
 	public function api_delete_love(Request $request, $token) {
-		if ($token != $this->container->getParameter('token_app')) {
+		if ($token != $this->token) {
 			throw new NotFoundHttpException("Page not found");
 		}
 		$id = $request->get("id");
@@ -964,7 +966,7 @@ public function addVideoUrl(Request $request) {
 	}
 
 	public function api_delete_sad(Request $request, $token) {
-		if ($token != $this->container->getParameter('token_app')) {
+		if ($token != $this->token) {
 			throw new NotFoundHttpException("Page not found");
 		}
 		$id = $request->get("id");
@@ -983,7 +985,7 @@ public function addVideoUrl(Request $request) {
 	}
 
 	public function api_delete_woow(Request $request, $token) {
-		if ($token != $this->container->getParameter('token_app')) {
+		if ($token != $this->token) {
 			throw new NotFoundHttpException("Page not found");
 		}
 		$id = $request->get("id");
@@ -1002,7 +1004,7 @@ public function addVideoUrl(Request $request) {
 	}
 
 	public function api_my(Request $request, $page, $user, $token) {
-		if ($token != $this->container->getParameter('token_app')) {
+		if ($token != $this->token) {
 			throw new NotFoundHttpException("Page not found");
 		}
 		$nombre = 30;
@@ -1040,7 +1042,7 @@ public function addVideoUrl(Request $request) {
         $code = "200";
         $message = "Ok";
         $values = array();
-        if ($token != $this->container->getParameter('token_app')) {
+        if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
         $em = $this->entityManager;
@@ -1248,7 +1250,7 @@ public function addVideoUrl(Request $request) {
 		$code = "200";
 		$message = "Ok";
 		$values = array();
-		if ($token != $this->container->getParameter('token_app')) {
+		if ($token != $this->token) {
 			throw new NotFoundHttpException("Page not found");
 		}
 		$em = $this->entityManager;
@@ -1354,7 +1356,7 @@ public function addVideoUrl(Request $request) {
         $code = "200";
         $message = "Ok";
         $values = array();
-        if ($token != $this->container->getParameter('token_app')) {
+        if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
         $em = $this->entityManager;
@@ -1453,7 +1455,7 @@ public function addVideoUrl(Request $request) {
 		$code = "200";
 		$message = "Ok";
 		$values = array();
-		if ($token != $this->container->getParameter('token_app')) {
+		if ($token != $this->token) {
 			throw new NotFoundHttpException("Page not found");
 		}
 		$em = $this->entityManager;

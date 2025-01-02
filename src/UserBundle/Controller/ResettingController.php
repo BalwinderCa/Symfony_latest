@@ -19,6 +19,7 @@ class ResettingController  extends AbstractController
     private $entityManager;
     private $tokenGenerator;
     private CacheManager $imagineCacheManager;
+    private $token;
 
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -27,13 +28,14 @@ class ResettingController  extends AbstractController
     {
         $this->entityManager = $entityManager;
         $this->imagineCacheManager = $imagineCacheManager;
+        $this->token = "4F5A9C3D9A86FA54EACEDDD635185";
     }
 
     const SESSION_EMAIL = 'fos_user_send_resetting_email/email';
 
     public function api_emailAction($email, $token)
     {
-        if ($token !== $this->getParameter('token_app')) {
+        if ($token !== $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
 
@@ -88,7 +90,7 @@ class ResettingController  extends AbstractController
 
     public function api_requestAction($key, $token)
     {
-        if ($token !== $this->getParameter('token_app')) {
+        if ($token !== $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
 
@@ -126,7 +128,7 @@ class ResettingController  extends AbstractController
 
     public function api_resetAction($id, $key, $new_password, $token)
     {
-        if ($token !== $this->getParameter('token_app')) {
+        if ($token !== $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
 

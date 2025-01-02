@@ -26,18 +26,20 @@ class LanguageController extends AbstractController
 
     private $entityManager;
     private  $params;
+    private $token;
 
      // Inject the EntityManagerInterface into the controller
      public function __construct(EntityManagerInterface $entityManager,ParameterBagInterface $params)
      {
          $this->entityManager = $entityManager;
          $this->params = $params;
+         $this->token = "4F5A9C3D9A86FA54EACEDDD635185";
      }
 
     #[Route('/api/languages/{token}', name: 'api_languages_all')]
     public function api_all(Request $request, $token)
     {
-        if ($token != $this->getParameter('token_app')) {
+        if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
 

@@ -27,6 +27,7 @@ class CategoryController extends AbstractController
     private EntityManagerInterface $entityManager;
     private ParameterBagInterface $params;
     private CacheManager $imagineCacheManager;
+    private $token;
 
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -36,6 +37,7 @@ class CategoryController extends AbstractController
         $this->entityManager = $entityManager;
         $this->params = $params;
         $this->imagineCacheManager = $imagineCacheManager;
+        $this->token = "4F5A9C3D9A86FA54EACEDDD635185";
     }
 
     #[Route('/categories', name: 'app_category_index')]
@@ -53,7 +55,7 @@ class CategoryController extends AbstractController
     #[Route('/api/categories/popular/{token}', name: 'app_category_api_popular')]
     public function apiPopular(Request $request, string $token): Response
     {
-        if ($token != $this->params->get('token_app')) {
+        if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
 
@@ -101,7 +103,7 @@ class CategoryController extends AbstractController
     #[Route('/api/categories/all/{token}', name: 'app_category_api_all')]
     public function apiAll(Request $request, string $token): Response
     {
-        if ($token != $this->params->get('token_app')) {
+        if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
 
@@ -135,7 +137,7 @@ class CategoryController extends AbstractController
     #[Route('/api/categories/by-section/{id}/{token}', name: 'app_category_api_by_section')]
     public function apiBySection(int $id, string $token): Response
     {
-        if ($token != $this->params->get('token_app')) {
+        if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
 

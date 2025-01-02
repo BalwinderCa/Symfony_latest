@@ -21,12 +21,15 @@ class VersionController extends AbstractController
 {   
 
     private $entityManager;
+    private $token;
 
     // Inject the EntityManagerInterface into the controller
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
+        $this->token = "4F5A9C3D9A86FA54EACEDDD635185";
     }
+    
     #[Route('/version/add', name: 'app_version_add')]
     public function add(Request $request)
     {
@@ -48,26 +51,28 @@ class VersionController extends AbstractController
     }
 
     #[Route('/api/version/check/{code}/{token}', name: 'api_version_check')]
-    public function api_check(Request $request, $code, $token)
+    public function apiCheck(Request $request, $code, $token)
     {
-        if ($token != $this->getParameter('token_app')) {
+        if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
-
+    
         $em = $this->entityManager;
         $version = $em->getRepository(Version::class)->findOneBy([
             "code" => $code,
             "enabled" => true
         ]);
-
+    
         $response = [];
         $message = "";
         if ($version === null) {
             $versions = $em->getRepository(Version::class)->findBy([
                 "enabled" => true
             ], ["code" => "asc"]);
-
-            $latestVersion = end($versions);
+    
+            // Ensure that $versions is not empty before using end()
+            $latestVersion = !empty($versions) ? end($versions) : null;
+    
             if ($latestVersion === null) {
                 $response["name"] = "update";
                 $response["value"] = "App on update";
@@ -80,15 +85,16 @@ class VersionController extends AbstractController
             $response["name"] = "update";
             $response["value"] = "App on update";
         }
-
+    
         $error = [
             "code" => "200",
             "message" => $message,
             "values" => [$response],
         ];
-
+    
         return $this->json($error);
     }
+
 
     #[Route('/versions', name: 'app_version_index')]
     public function index()
@@ -125,7 +131,7 @@ class VersionController extends AbstractController
             return $this->redirectToRoute('app_version_index');
         }
 
-        return $this->render('@AppBundle/Version/delete.html.twig', [
+        return $this->render('@AppBundle/version/delete.html.twig', [
             'form' => $form->createView()
         ]);
     }

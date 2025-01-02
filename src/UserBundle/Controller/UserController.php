@@ -31,6 +31,7 @@ class UserController extends AbstractController
     private CacheManager $imagineCacheManager;
     private $paginator;
     private $params;
+    private $token;
 
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -40,6 +41,7 @@ class UserController extends AbstractController
         $this->entityManager = $entityManager;
         $this->imagineCacheManager = $imagineCacheManager;
         $this->paginator = $paginator;
+        $this->token = "4F5A9C3D9A86FA54EACEDDD635185";
     }
 
     private function getAccessToken(): string
@@ -365,7 +367,7 @@ class UserController extends AbstractController
 
     public function api_get(Request $request, $user, $me, $token)
     {
-        if ($token != $this->container->getParameter("token_app")) {
+        if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
         $code = 200;
@@ -450,7 +452,7 @@ class UserController extends AbstractController
         $key_,
         $token
     ) {
-        if ($token != $this->container->getParameter("token_app")) {
+        if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
         $code = 200;
@@ -536,7 +538,7 @@ class UserController extends AbstractController
         $key_,
         $token
     ) {
-        if ($token != $this->container->getParameter("token_app")) {
+        if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
         $code = 200;
@@ -586,7 +588,7 @@ class UserController extends AbstractController
 
     public function api_login($username, $password, $token)
     {
-        if ($token != $this->container->getParameter("token_app")) {
+        if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
         $code = "200";
@@ -666,7 +668,7 @@ class UserController extends AbstractController
 
     public function api_edit(Request $request, $token)
     {
-        if ($token != $this->container->getParameter("token_app")) {
+        if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
         $email = $request->get("email");
@@ -712,7 +714,7 @@ class UserController extends AbstractController
 
     public function api_token(Request $request, $token)
     {
-        if ($token != $this->container->getParameter("token_app")) {
+        if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
         $token_f = $request->get("token_f");
@@ -750,7 +752,7 @@ class UserController extends AbstractController
 
     public function api_code(Request $request, $token)
     {
-        if ($token != $this->container->getParameter("token_app")) {
+        if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
         $ReferenceCode = $request->get("code");
@@ -993,7 +995,7 @@ class UserController extends AbstractController
 
     public function api_register(Request $request, $token)
     {
-        if ($token != $this->container->getParameter("token_app")) {
+        if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
         $username = $request->get("username");
@@ -1094,7 +1096,7 @@ class UserController extends AbstractController
 
     public function api_change_password($id, $password, $new_password, $token)
     {
-        if ($token != $this->container->getParameter("token_app")) {
+        if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
 
@@ -1164,7 +1166,7 @@ class UserController extends AbstractController
 
     public function api_edit_name($id, $name, $key, $token)
     {
-        if ($token != $this->container->getParameter("token_app")) {
+        if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
         sleep(2);
@@ -1202,7 +1204,7 @@ class UserController extends AbstractController
         $code = "500";
         $message = "";
         $errors = [];
-        if ($token != $this->container->getParameter("token_app")) {
+        if ($token != $this->token) {
             $code = 500;
         }
 
@@ -1241,7 +1243,7 @@ class UserController extends AbstractController
         $code = "200";
         $message = "Ok";
         $values = [];
-        if ($token != $this->container->getParameter("token_app")) {
+        if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
         $em = $this->entityManager;
@@ -1353,7 +1355,7 @@ class UserController extends AbstractController
 
     public function api_followings(Request $request, $user, $token)
     {
-        if ($token != $this->container->getParameter("token_app")) {
+        if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
         $em = $this->entityManager;
@@ -1377,7 +1379,7 @@ class UserController extends AbstractController
 
     public function api_followers(Request $request, $user, $token)
     {
-        if ($token != $this->container->getParameter("token_app")) {
+        if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
         $em = $this->entityManager;
@@ -1401,7 +1403,7 @@ class UserController extends AbstractController
 
     public function api_search(Request $request, $query, $token)
     {
-        if ($token != $this->container->getParameter("token_app")) {
+        if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
         $em = $this->entityManager;
@@ -1457,10 +1459,10 @@ class UserController extends AbstractController
 
     public function api_followingstop(Request $request, $user, $token)
     {
-        if ($token != $this->container->getParameter("token_app")) {
+        if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
-        if ($token != $this->container->getParameter("token_app")) {
+        if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
         $em = $this->entityManager;

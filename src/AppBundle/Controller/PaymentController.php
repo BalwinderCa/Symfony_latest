@@ -20,15 +20,17 @@ class PaymentController extends AbstractController
 {   
 
     private $entityManager;
+    private $token;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
+        $this->token = "4F5A9C3D9A86FA54EACEDDD635185";
     }
     #[Route('/api/transaction/{user}/{key}/{token}', name: 'api_transaction_by_user')]
     public function api_transaction_by_user(Request $request, $user, $key, $token)
     {
-        if ($token != $this->container->getParameter('token_app')) {
+        if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
 
@@ -92,7 +94,7 @@ class PaymentController extends AbstractController
     #[Route('/api/withdrawal/request', name: 'api_request_by_user')]
     public function api_request_by_user(Request $request, $token)
     {
-        if ($token != $this->container->getParameter('token_app')) {
+        if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
 
@@ -165,7 +167,7 @@ class PaymentController extends AbstractController
     #[Route('/api/withdrawals/{user}/{key}/{token}', name: 'api_withdrawals_by_user')]
     public function api_withdrawals_by_user(Request $request, $user, $key, $token)
     {
-        if ($token != $this->container->getParameter('token_app')) {
+        if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
 
@@ -215,7 +217,7 @@ class PaymentController extends AbstractController
     #[Route('/api/earning/{user}/{key}/{token}', name: 'api_earning_by_user')]
     public function api_earning_by_user(Request $request, $user, $key, $token)
     {
-        if ($token != $this->container->getParameter('token_app')) {
+        if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
 

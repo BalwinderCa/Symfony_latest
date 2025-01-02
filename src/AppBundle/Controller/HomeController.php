@@ -35,12 +35,14 @@ class HomeController extends AbstractController
 
     private $entityManager;
     private CacheManager $imagineCacheManager;
+    private $token;
 
     // Inject the EntityManagerInterface into the controller
     public function __construct(EntityManagerInterface $entityManager,CacheManager $imagineCacheManager)
     {
         $this->entityManager = $entityManager;
         $this->imagineCacheManager = $imagineCacheManager;
+        $this->token = "4F5A9C3D9A86FA54EACEDDD635185";
     }
 
     private function getAccessToken(): string
@@ -578,7 +580,7 @@ class HomeController extends AbstractController
         ]);
     }
     public function api_device($tkn,$token){
-        if ($token!=$this->container->getParameter('token_app')) {
+        if ($token!=$this->token) {
             throw new NotFoundHttpException("Page not found");  
         }
         $code="200";

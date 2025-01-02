@@ -23,11 +23,13 @@ class CommentController extends AbstractController
 {   
 
     private $entityManager;
+    private $token;
 
     // Inject the EntityManagerInterface into the controller
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
+        $this->token = "4F5A9C3D9A86FA54EACEDDD635185";
     }
     #[Route('/comments', name: 'app_comment_index')]
     public function index(Request $request, PaginatorInterface $paginator)
@@ -52,7 +54,7 @@ class CommentController extends AbstractController
     #[Route('/api/comments/{id}/{token}', name: 'app_comment_api_list')]
     public function apiList($id, $token, SerializerInterface $serializer)
     {
-        if ($token !== $this->getParameter('token_app')) {
+        if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
 
@@ -68,7 +70,7 @@ class CommentController extends AbstractController
     #[Route('/api/comments/add/{token}', name: 'app_comment_api_add')]
     public function apiAdd(Request $request, $token, SerializerInterface $serializer)
     {
-        if ($token !== $this->getParameter('token_app')) {
+        if ($token != $this->token) {
             throw new NotFoundHttpException("Page not found");
         }
 
